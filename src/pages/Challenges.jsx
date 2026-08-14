@@ -1,0 +1,173 @@
+// src/pages/Challenges.jsx
+import { Trophy, Calendar, Clock, Code, Award, AlertCircle, CheckCircle2, ChevronRight } from 'lucide-react';
+import { SITE_CONFIG } from '../config/constants';
+
+// Placeholder Data for Challenges
+const upcomingChallenges = [
+  {
+    id: 1,
+    title: 'Frontend UI Challenge #01 (Example)',
+    date: 'To be announced',
+    duration: '48 Hours',
+    difficulty: 'Intermediate',
+    description: 'Build a fully responsive, pixel-perfect dashboard interface using React and Tailwind CSS based on a provided Figma design.',
+    status: 'Upcoming'
+  }
+];
+
+const pastChallenges = [
+  // Empty array for now, we will show a "No past challenges" message
+];
+
+const rules = [
+  "All code must be original and written during the competition timeframe.",
+  "Participants must use the specified technology stack.",
+  "Submissions will be evaluated on code quality, UI/UX, and performance.",
+  "Plagiarism will result in immediate disqualification.",
+  "The judge's decision is final and binding."
+];
+
+const Challenges = () => {
+  return (
+    <div className="w-full bg-slate-50 min-h-screen pb-20">
+      
+      {/* HEADER SECTION */}
+      <div className="bg-slate-900 text-white py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Trophy size={48} className="mx-auto text-blue-400 mb-6" />
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">Velystra Coding Challenges</h1>
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+            Test your skills, compete with other developers, and build amazing projects under time pressure.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 space-y-16">
+        
+        {/* UPCOMING CHALLENGES SECTION */}
+        <section>
+          <div className="flex items-center gap-2 mb-8">
+            <Calendar className="text-blue-600" size={24} />
+            <h2 className="text-2xl font-bold text-slate-900">Upcoming Challenges</h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6">
+            {upcomingChallenges.map((challenge) => (
+              <div key={challenge.id} className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 justify-between md:items-center">
+                  <div className="flex-1">
+                    <div className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide rounded-full mb-4">
+                      {challenge.status}
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">{challenge.title}</h3>
+                    <p className="text-slate-600 mb-6 max-w-3xl">{challenge.description}</p>
+                    
+                    <div className="flex flex-wrap gap-4 md:gap-8">
+                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
+                        <Calendar size={16} className="text-slate-400" /> Date: {challenge.date}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
+                        <Clock size={16} className="text-slate-400" /> Duration: {challenge.duration}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
+                        <Code size={16} className="text-slate-400" /> Level: {challenge.difficulty}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="shrink-0 mt-4 md:mt-0">
+                    <button className="w-full md:w-auto bg-slate-100 text-slate-400 cursor-not-allowed font-medium px-6 py-3 rounded-md transition-colors">
+                      Registration Opening Soon
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          {/* PRIZES SECTION */}
+          <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-2 mb-6">
+              <Award className="text-blue-600" size={24} />
+              <h2 className="text-2xl font-bold text-slate-900">Example Prizes</h2>
+            </div>
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+              <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
+              <p className="text-sm text-amber-800">
+                The rewards below are placeholder examples. Actual prizes will be announced when a live contest is scheduled.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-yellow-500">🥇</span>
+                  <span className="font-semibold text-slate-800">1st Place</span>
+                </div>
+                <span className="text-slate-600 text-sm">Example: Developer Swag Kit + Certificate</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-slate-400">🥈</span>
+                  <span className="font-semibold text-slate-800">2nd Place</span>
+                </div>
+                <span className="text-slate-600 text-sm">Example: Premium Resources + Certificate</span>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-amber-600">🥉</span>
+                  <span className="font-semibold text-slate-800">3rd Place</span>
+                </div>
+                <span className="text-slate-600 text-sm">Example: Certificate of Excellence</span>
+              </div>
+            </div>
+          </section>
+
+          {/* RULES SECTION */}
+          <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex items-center gap-2 mb-6">
+              <AlertCircle className="text-blue-600" size={24} />
+              <h2 className="text-2xl font-bold text-slate-900">General Rules</h2>
+            </div>
+            <ul className="space-y-4">
+              {rules.map((rule, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <CheckCircle2 className="text-blue-500 shrink-0 mt-0.5" size={18} />
+                  <span className="text-slate-700 leading-relaxed">{rule}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+        </div>
+
+        {/* PAST CHALLENGES SECTION */}
+        <section>
+          <div className="flex items-center gap-2 mb-8">
+            <Clock className="text-slate-400" size={24} />
+            <h2 className="text-2xl font-bold text-slate-900">Past Challenges</h2>
+          </div>
+          
+          {pastChallenges.length === 0 ? (
+            <div className="bg-white p-12 rounded-xl border border-slate-200 border-dashed text-center">
+              <Code size={48} className="mx-auto text-slate-300 mb-4" />
+              <h3 className="text-lg font-bold text-slate-700 mb-2">No Past Challenges Yet</h3>
+              <p className="text-slate-500 max-w-md mx-auto">
+                Our first coding challenge will be announced soon. Check back later to see the archive of completed competitions.
+              </p>
+            </div>
+          ) : (
+            <div>{/* Map past challenges here when available */}</div>
+          )}
+        </section>
+
+      </div>
+    </div>
+  );
+};
+
+export default Challenges;
