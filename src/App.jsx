@@ -7,6 +7,8 @@ import Challenges from './pages/Challenges';
 import Verify from './pages/Verify';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Validate from './pages/Validate';
+import Apply from './pages/Apply';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/verify" element={<Verify />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/validate" element={<Validate />} />
+            <Route path="/apply" element={<Apply />} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
                 <h1 className="text-6xl font-bold text-slate-900 mb-4">404</h1>

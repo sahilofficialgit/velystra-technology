@@ -1,6 +1,6 @@
 // src/pages/Verify.jsx
 import { useState, useRef } from 'react';
-import { ShieldCheck, Search, Info, CheckCircle, Lock, AlertCircle, User, Award, CreditCard, Download } from 'lucide-react';
+import { ShieldCheck, Search, Info, CheckCircle, AlertCircle, User, Award, CreditCard, Download, Truck, FileText } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 
 const Verify = () => {
@@ -13,18 +13,35 @@ const Verify = () => {
   const [certificateId, setCertificateId] = useState('');
   const [issueDate, setIssueDate] = useState(''); 
   
+  // NAYA: Delivery Option State
+  const [deliveryOption, setDeliveryOption] = useState('digital');
+
   const certificateRef = useRef();
+
+  // DYNAMIC PRICING LOGIC
+  const getPrices = (durationStr = "1 Month") => {
+    if (durationStr.includes("3")) return { digital: 300, printed: 450 };
+    if (durationStr.includes("6")) return { digital: 500, printed: 700 };
+    return { digital: 150, printed: 299 }; // Default 1 Month
+  };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     if (!certId.trim()) return;
-    setIsVerifying(true); setResult(null); setError(null); setPaymentSuccess(false);
+    setIsVerifying(true); setResult(null); setError(null); 
     
     try {
       const response = await fetch(`http://localhost:5000/api/check-status/${certId}`);
       const data = await response.json();
       if (response.ok && data.success) {
         setResult(data);
+        if (data.user.certId && data.user.certId.trim() !== '') {
+          setCertificateId(data.user.certId);
+          setIssueDate(data.user.issueDate);
+          setPaymentSuccess(true);
+        } else {
+          setPaymentSuccess(false);
+        }
       } else {
         setError(data.message || 'Verification failed. Please check the ID.');
       }
@@ -37,10 +54,13 @@ const Verify = () => {
 
   const handlePayment = async () => {
     try {
+      const prices = getPrices(result.user.duration);
+      const finalAmount = deliveryOption === 'digital' ? prices.digital : prices.printed;
+
       const orderRes = await fetch("http://localhost:5000/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: 150, regId: certId }),
+        body: JSON.stringify({ amount: finalAmount, regId: certId }), // Dynamically sending amount
       });
       const orderData = await orderRes.json();
 
@@ -50,11 +70,11 @@ const Verify = () => {
       }
 
       const options = {
-        key: "rzp_test_TQ2XYIDcQnSoSL", // <-- APNI RAZORPAY KEY YAHAN DAALEIN
+        key: "rzp_test_TQ2XYIDcQnSoSL", // <-- AAPKI RAZORPAY KEY
         amount: orderData.order.amount,
         currency: "INR",
         name: "Velystra Technology",
-        description: "Official Certificate Unlock",
+        description: `${deliveryOption === 'printed' ? 'Printed + Digital' : 'Digital'} Certificate`,
         order_id: orderData.order.id,
         handler: async function (response) {
           const verifyRes = await fetch("http://localhost:5000/api/verify-payment", {
@@ -114,7 +134,6 @@ const Verify = () => {
     <div className="w-full bg-slate-50 min-h-[calc(100vh-72px)] py-12 md:py-20 flex flex-col items-center">
       <div className="w-full max-w-2xl mx-auto px-4">
         
-        {/* HEADER */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
             <ShieldCheck size={32} className="text-blue-700" />
@@ -127,7 +146,6 @@ const Verify = () => {
           </p>
         </div>
 
-        {/* VERIFICATION BOX */}
         <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-10 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-700"></div>
 
@@ -139,9 +157,9 @@ const Verify = () => {
                 <input
                   type="text"
                   value={certId}
-                  onChange={(e) => setCertId(e.target.value.toUpperCase())} 
+                  onChange={(e) => setCertId(e.target.value.replace(/-/g, '').toUpperCase())} 
                   className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm uppercase"
-                  placeholder="e.g. VT-FE-26-000"
+                  placeholder="e.g. VTFE26123456"
                   required
                 />
               </div>
@@ -151,7 +169,6 @@ const Verify = () => {
             </button>
           </form>
 
-          {/* RESULTS SECTION */}
           <div className="mt-8">
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
@@ -171,19 +188,43 @@ const Verify = () => {
                     <div className="mt-2 space-y-1">
                       <p className="text-sm flex items-center gap-2 text-slate-700"><User size={14} className="text-slate-400"/> <strong>Name:</strong> {result.user.name}</p>
                       <p className="text-sm flex items-center gap-2 text-slate-700"><Award size={14} className="text-slate-400"/> <strong>Domain:</strong> {result.user.domain}</p>
+                      <p className="text-sm flex items-center gap-2 text-slate-700"><FileText size={14} className="text-slate-400"/> <strong>Duration:</strong> {result.user.duration}</p>
                     </div>
                   </div>
                 </div>
 
                 {result.isCompleted && (
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {!paymentSuccess ? (
-                      <button onClick={handlePayment} className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                        <CreditCard size={18} /> Unlock Digital Certificate 🔓 (₹150)
-                      </button>
+                      <>
+                        {/* OPTIONS SELECTION UI */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <label className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center justify-center gap-2 transition-all ${deliveryOption === 'digital' ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-blue-300'}`}>
+                            <input type="radio" name="certType" value="digital" className="hidden" checked={deliveryOption === 'digital'} onChange={() => setDeliveryOption('digital')} />
+                            <Download size={24} className={deliveryOption === 'digital' ? 'text-blue-600' : 'text-slate-400'} />
+                            <div className="text-center">
+                              <p className="font-bold text-slate-800">Digital Only</p>
+                              <p className="text-lg font-black text-blue-700">₹{getPrices(result.user.duration).digital}</p>
+                            </div>
+                          </label>
+
+                          <label className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center justify-center gap-2 transition-all ${deliveryOption === 'printed' ? 'border-blue-600 bg-blue-50' : 'border-slate-200 hover:border-blue-300'}`}>
+                            <input type="radio" name="certType" value="printed" className="hidden" checked={deliveryOption === 'printed'} onChange={() => setDeliveryOption('printed')} />
+                            <Truck size={24} className={deliveryOption === 'printed' ? 'text-blue-600' : 'text-slate-400'} />
+                            <div className="text-center">
+                              <p className="font-bold text-slate-800">Printed + Courier</p>
+                              <p className="text-lg font-black text-blue-700">₹{getPrices(result.user.duration).printed}</p>
+                            </div>
+                          </label>
+                        </div>
+
+                        <button onClick={handlePayment} className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md text-lg">
+                          <CreditCard size={20} /> Pay ₹{deliveryOption === 'digital' ? getPrices(result.user.duration).digital : getPrices(result.user.duration).printed} to Unlock
+                        </button>
+                      </>
                     ) : (
-                      <button onClick={handleDownloadPDF} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md">
-                        <Download size={18} /> Download Certificate (PDF)
+                      <button onClick={handleDownloadPDF} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md text-lg">
+                        <Download size={20} /> Download Digital Certificate
                       </button>
                     )}
                   </div>
@@ -199,62 +240,19 @@ const Verify = () => {
       {/* ======================================================== */}
       {result && (
         <div style={{ display: 'none' }}>
-           <div 
-             ref={certificateRef}
-             style={{
-               width: '1123px', // A4 Landscape width
-               height: '794px', // A4 Landscape height
-               position: 'relative',
-               fontFamily: "'Montserrat', 'Arial', sans-serif", // Clean professional font
-               backgroundImage: 'url("/template.png")', 
-               backgroundSize: '100% 100%',
-               backgroundPosition: 'center',
-               backgroundRepeat: 'no-repeat',
-               backgroundColor: '#fff'
-             }}
-           >
+           <div ref={certificateRef} style={{ width: '1123px', height: '794px', position: 'relative', fontFamily: "'Montserrat', 'Arial', sans-serif", backgroundImage: 'url("/template.png")', backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#fff' }}>
              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
-               
-               {/* 1. CERTIFICATE ID (Top Right corner) */}
-               <div style={{ position: 'absolute', top: '10%', right: '4%', width: '15%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {certificateId}
-               </div>
-
-               {/* 2. NAME (Center Big Line) */}
-               <div style={{ position: 'absolute', top: '43.5%', left: '0', width: '100%', textAlign: 'center', fontSize: '42px', fontWeight: 'bold', color: '#0a192f', textTransform: 'uppercase', letterSpacing: '2px' }}>
-                 {result.user.name}
-               </div>
-
-               {/* 3. DURATION (Extracts only number, e.g. "1 Month" -> "1") */}
-               <div style={{ position: 'absolute', top: '54%', left: '40.5%', width: '2.5%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {String(result.user.duration).replace(/[^0-9]/g, '')}
-               </div>
-
-               {/* 4. DOMAIN (Web Development, etc.) */}
-               <div style={{ position: 'absolute', top: '53.5%', left: '57.5%', width: '25%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {result.user.domain}
-               </div>
-
-               {/* 5. START DATE */}
-               <div style={{ position: 'absolute', top: '57.5%', left: '36.5%', width: '22%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {result.user.startDate}
-               </div>
-
-               {/* 6. END DATE */}
-               <div style={{ position: 'absolute', top: '57.5%', left: '61.5%', width: '23%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {result.user.endDate}
-               </div>
-
-               {/* 7. ISSUE DATE (Bottom Right) */}
-               <div style={{ position: 'absolute', top: '80%', right: '17%', width: '18%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>
-                 {issueDate}
-               </div>
-
+               <div style={{ position: 'absolute', top: '10%', right: '4%', width: '15%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{certificateId}</div>
+               <div style={{ position: 'absolute', top: '43.5%', left: '0', width: '100%', textAlign: 'center', fontSize: '42px', fontWeight: 'bold', color: '#0a192f', textTransform: 'uppercase', letterSpacing: '2px' }}>{result.user.name}</div>
+               <div style={{ position: 'absolute', top: '54%', left: '40.5%', width: '2.5%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{String(result.user.duration).replace(/[^0-9]/g, '')}</div>
+               <div style={{ position: 'absolute', top: '53.5%', left: '57.5%', width: '25%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.domain}</div>
+               <div style={{ position: 'absolute', top: '57.5%', left: '36.5%', width: '22%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.startDate}</div>
+               <div style={{ position: 'absolute', top: '57.5%', left: '61.5%', width: '23%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.endDate}</div>
+               <div style={{ position: 'absolute', top: '80%', right: '17%', width: '18%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{issueDate}</div>
              </div>
            </div>
         </div>
       )}
-
     </div>
   );
 };
