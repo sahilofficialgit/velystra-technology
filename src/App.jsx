@@ -9,6 +9,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Validate from './pages/Validate';
 import Apply from './pages/Apply';
+import Submit from './pages/Submit';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/validate" element={<Validate />} />
             <Route path="/apply" element={<Apply />} />
+            <Route path="/submit" element={<Submit />} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
                 <h1 className="text-6xl font-bold text-slate-900 mb-4">404</h1>

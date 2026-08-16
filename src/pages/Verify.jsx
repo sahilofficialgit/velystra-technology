@@ -1,6 +1,6 @@
 // src/pages/Verify.jsx
 import { useState, useRef } from 'react';
-import { ShieldCheck, Search, Info, CheckCircle, AlertCircle, User, Award, CreditCard, Download, Truck, FileText } from 'lucide-react';
+import { ShieldCheck, Search, Info, CheckCircle, AlertCircle, User, Award, CreditCard, Download, Truck, FileText, MapPin } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 
 const Verify = () => {
@@ -13,12 +13,13 @@ const Verify = () => {
   const [certificateId, setCertificateId] = useState('');
   const [issueDate, setIssueDate] = useState(''); 
   
-  // NAYA: Delivery Option State
+  // NAYA: Delivery Option & Address State
   const [deliveryOption, setDeliveryOption] = useState('digital');
+  const [address, setAddress] = useState('');
 
   const certificateRef = useRef();
 
-  // DYNAMIC PRICING LOGIC
+  // DYNAMIC PRICING LOGIC (Display ke liye)
   const getPrices = (durationStr = "1 Month") => {
     if (durationStr.includes("3")) return { digital: 300, printed: 450 };
     if (durationStr.includes("6")) return { digital: 500, printed: 700 };
@@ -28,19 +29,30 @@ const Verify = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
     if (!certId.trim()) return;
-    setIsVerifying(true); setResult(null); setError(null); 
+    
+    setIsVerifying(true); 
+    setResult(null); 
+    setError(null); 
+    setPaymentSuccess(false); 
+    setCertificateId('');
+    setIssueDate('');
+    setAddress('');
     
     try {
       const response = await fetch(`http://localhost:5000/api/check-status/${certId}`);
       const data = await response.json();
+      
       if (response.ok && data.success) {
         setResult(data);
-        if (data.user.certId && data.user.certId.trim() !== '') {
-          setCertificateId(data.user.certId);
+        
+        const fetchedCertId = data.user.certId ? data.user.certId.trim() : '';
+        
+        if (fetchedCertId !== '' && fetchedCertId.startsWith('VTCC')) {
+          setCertificateId(fetchedCertId);
           setIssueDate(data.user.issueDate);
-          setPaymentSuccess(true);
+          setPaymentSuccess(true); 
         } else {
-          setPaymentSuccess(false);
+          setPaymentSuccess(false); 
         }
       } else {
         setError(data.message || 'Verification failed. Please check the ID.');
@@ -54,13 +66,16 @@ const Verify = () => {
 
   const handlePayment = async () => {
     try {
-      const prices = getPrices(result.user.duration);
-      const finalAmount = deliveryOption === 'digital' ? prices.digital : prices.printed;
+      // Agar printed option select kiya hai toh address bharna zaroori hai
+      if (deliveryOption === 'printed' && !address.trim()) {
+        alert("Please enter your delivery address for the printed certificate.");
+        return;
+      }
 
       const orderRes = await fetch("http://localhost:5000/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: finalAmount, regId: certId }), // Dynamically sending amount
+        body: JSON.stringify({ regId: certId, deliveryOption: deliveryOption }), 
       });
       const orderData = await orderRes.json();
 
@@ -84,7 +99,9 @@ const Verify = () => {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              regId: certId
+              regId: certId,
+              deliveryOption: deliveryOption,
+              address: address // 📦 Address backend ko bhej diya
             }),
           });
           const verifyData = await verifyRes.json();
@@ -217,6 +234,23 @@ const Verify = () => {
                             </div>
                           </label>
                         </div>
+
+                        {/* 📦 NAYA: Address Input Box (Sirf Printed select hone par dikhega) */}
+                        {deliveryOption === 'printed' && (
+                          <div className="space-y-2 animate-fade-in">
+                            <label className="block text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                              <MapPin size={16} className="text-blue-600" /> Delivery Address for Printed Certificate
+                            </label>
+                            <textarea
+                              rows="3"
+                              value={address}
+                              onChange={(e) => setAddress(e.target.value)}
+                              placeholder="Enter your full postal address with landmark and Pincode..."
+                              className="block w-full p-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                              required
+                            />
+                          </div>
+                        )}
 
                         <button onClick={handlePayment} className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md text-lg">
                           <CreditCard size={20} /> Pay ₹{deliveryOption === 'digital' ? getPrices(result.user.duration).digital : getPrices(result.user.duration).printed} to Unlock

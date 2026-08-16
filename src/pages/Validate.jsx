@@ -14,11 +14,13 @@ const Validate = () => {
     setIsLoading(true); setResult(null); setError(null);
     
     try {
-      const response = await fetch(`http://localhost:5000/api/verify-certificate/${certId}`);
+      // FIX 1: API endpoint ko update kiya (/api/validate/)
+      const response = await fetch(`http://localhost:5000/api/validate/${certId}`);
       const data = await response.json();
       
       if (response.ok && data.success) {
-        setResult(data.certificate);
+        // FIX 2: Backend se data 'user' ke andar aa raha hai, 'certificate' nahi
+        setResult(data.user);
       } else {
         setError(data.message || 'Invalid Certificate ID.');
       }
@@ -52,7 +54,7 @@ const Validate = () => {
                   value={certId}
                   onChange={(e) => setCertId(e.target.value.toUpperCase())}
                   className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono uppercase"
-                  placeholder="e.g. VEL-CERT-1234"
+                  placeholder="e.g. VTCC26123456"
                   required
                 />
               </div>
