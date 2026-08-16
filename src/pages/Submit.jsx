@@ -29,7 +29,7 @@ const Submit = () => {
     const combinedLinks = `Task 1: ${formData.task1} \nTask 2: ${formData.task2} \nTask 3: ${formData.task3}`;
 
     try {
-      const response = await fetch('http://localhost:5000/api/submit-task', {
+      const response = await fetch('https://velystra-backend.onrender.com/api/submit-task', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // Backend ko abhi bhi lag raha hai ki 1 hi link aa raha hai (taskLink)

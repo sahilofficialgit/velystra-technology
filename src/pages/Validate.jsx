@@ -15,7 +15,7 @@ const Validate = () => {
     
     try {
       // FIX 1: API endpoint ko update kiya (/api/validate/)
-      const response = await fetch(`http://localhost:5000/api/validate/${certId}`);
+      const response = await fetch(`https://velystra-backend.onrender.com/api/validate/${certId}`);
       const data = await response.json();
       
       if (response.ok && data.success) {

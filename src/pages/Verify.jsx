@@ -39,7 +39,7 @@ const Verify = () => {
     setAddress('');
     
     try {
-      const response = await fetch(`http://localhost:5000/api/check-status/${certId}`);
+      const response = await fetch(`https://velystra-backend.onrender.com/api/check-status/${certId}`);
       const data = await response.json();
       
       if (response.ok && data.success) {
@@ -72,7 +72,7 @@ const Verify = () => {
         return;
       }
 
-      const orderRes = await fetch("http://localhost:5000/api/create-order", {
+      const orderRes = await fetch("https://velystra-backend.onrender.com/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ regId: certId, deliveryOption: deliveryOption }), 
@@ -92,7 +92,7 @@ const Verify = () => {
         description: `${deliveryOption === 'printed' ? 'Printed + Digital' : 'Digital'} Certificate`,
         order_id: orderData.order.id,
         handler: async function (response) {
-          const verifyRes = await fetch("http://localhost:5000/api/verify-payment", {
+          const verifyRes = await fetch("https://velystra-backend.onrender.com/api/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
