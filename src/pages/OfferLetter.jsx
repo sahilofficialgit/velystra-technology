@@ -47,53 +47,49 @@ const OfferLetter = () => {
     img.src = '/offer-template.png';
 
     img.onload = () => {
-      // Initialize jsPDF in A4 Portrait format (Units: millimeters, 210 x 297 mm)
       const doc = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
 
-      // 1. Draw background image to fill exact A4 page size
       doc.addImage(img, 'PNG', 0, 0, 210, 297);
 
-      // --- PERCENTAGE HELPERS (0 to 100%) ---
-      // A4 width = 210mm, height = 297mm
       const xPercent = (percent) => (percent * 210) / 100;
       const yPercent = (percent) => (percent * 297) / 100;
 
-      // --- INSTANT CURRENT DATE ---
+      // --- Current System Date (Applied Date ke liye) ---
       const today = new Date();
       const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
 
-      // --- TEXT STYLING (Black & Bold matching certificate style) ---
-      doc.setTextColor(0, 0, 0); // Pure black color
+      doc.setTextColor(0, 0, 0); 
       doc.setFont("helvetica", "bold");
 
-      // 1. Student Name (Bold)
+      // 1. Student Name
       doc.setFontSize(13);
       doc.text(userData.name || '', xPercent(15), yPercent(36.1));
 
-      // 2. Registration ID (Bold)
+      // 2. Registration ID
       doc.setFontSize(11);
       doc.text(regId || '', xPercent(78.7), yPercent(30.6)); 
 
-      // 3. Domain (Bold)
+      // 3. Domain
       doc.setFontSize(13);
       doc.text(userData.domain || '', xPercent(8), yPercent(42.7));
 
-      // 4. Internship Duration Number only (Bold)
+      // 4. Duration
       doc.setFontSize(12);
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
       doc.text(durationNum, xPercent(48.5), yPercent(50));
 
-      // 5. Start Date (Automatically using current/system date if backend data is empty)
-      doc.text(userData.startDate || currentFormattedDate, xPercent(15), yPercent(52.5));
+      // 5. Original Internship Start Date & End Date (As it is backend se)
+      doc.text(userData.startDate || '', xPercent(15), yPercent(52.5));
+      doc.text(userData.endDate || '', xPercent(42), yPercent(52.5));
 
-      // 6. End Date (Automatically fallback to current date or value)
-      doc.text(userData.endDate || currentFormattedDate, xPercent(42), yPercent(52.5));
+      // 6. Nayi Applied Date (Jis din user apply/download kar raha hai)
+      // Yahan X aur Y percentage apne template ke hisaab se adjust kar lena jahan Applied Date dikhani hai
+      doc.text(formattedDate, xPercent(60), yPercent(20)); 
 
-      // Save the final PDF
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
     };
   };
