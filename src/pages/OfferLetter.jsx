@@ -62,9 +62,9 @@ const OfferLetter = () => {
       const xPercent = (percent) => (percent * 210) / 100;
       const yPercent = (percent) => (percent * 297) / 100;
 
-      // --- INSTANT CURRENT DATE GENERATOR ---
+      // --- INSTANT CURRENT DATE ---
       const today = new Date();
-      const currentFormattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+      const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
 
       // --- TEXT STYLING (Black & Bold matching certificate style) ---
       doc.setTextColor(0, 0, 0); // Pure black color
