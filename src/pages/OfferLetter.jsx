@@ -88,7 +88,7 @@ const OfferLetter = () => {
 
       // 6. Nayi Applied Date (Jis din user apply/download kar raha hai)
       // Yahan X aur Y percentage apne template ke hisaab se adjust kar lena jahan Applied Date dikhani hai
-      doc.text(formattedDate, xPercent(17), yPercent(31)); 
+      doc.text(formattedDate, xPercent(17), yPercent(30)); 
 
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
     };
