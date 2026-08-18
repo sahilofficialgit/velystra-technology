@@ -229,7 +229,7 @@ const Verify = () => {
                             <input type="radio" name="certType" value="printed" className="hidden" checked={deliveryOption === 'printed'} onChange={() => setDeliveryOption('printed')} />
                             <Truck size={24} className={deliveryOption === 'printed' ? 'text-blue-600' : 'text-slate-400'} />
                             <div className="text-center">
-                              <p className="font-bold text-slate-800">Printed + Courier</p>
+                              <p className="font-bold text-slate-800">Digital + Printed + Courier</p>
                               <p className="text-lg font-black text-blue-700">₹{getPrices(result.user.duration).printed}</p>
                             </div>
                           </label>
