@@ -68,26 +68,26 @@ const OfferLetter = () => {
 
       // 1. Student Name (Bold) - Yahan ab tu percentage daal sakta hai (jaise Width ka 15%, Height ka 23%)
       doc.setFontSize(13);
-      doc.text(userData.name || '', xPercent(13.5), yPercent(38));
+      doc.text(userData.name || '', xPercent(15), yPercent(35));
 
       // 2. Registration ID (Bold)
       doc.setFontSize(11);
-      doc.text(regId || '', xPercent(75), yPercent(45)); 
+      doc.text(regId || '', xPercent(82), yPercent(30)); 
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
-      doc.text(userData.domain || '', xPercent(15), yPercent(50));
+      doc.text(userData.domain || '', xPercent(9), yPercent(44));
 
       // 4. Internship Duration Number only (Bold)
       doc.setFontSize(12);
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
-      doc.text(durationNum, xPercent(50), yPercent(50));
+      doc.text(durationNum, xPercent(48.5), yPercent(50));
 
       // 5. Start Date (Bold)
-      doc.text(userData.startDate || '', xPercent(20), yPercent(53));
+      doc.text(userData.startDate || '', xPercent(15), yPercent(52.5));
 
       // 6. End Date (Bold)
-      doc.text(userData.endDate || '', xPercent(20), yPercent(53));
+      doc.text(userData.endDate || '', xPercent(40), yPercent(52.5));
 
       // Save the final PDF
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
