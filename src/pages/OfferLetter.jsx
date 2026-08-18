@@ -63,26 +63,26 @@ const OfferLetter = () => {
 
       // 1. Student Name (Bold)
       doc.setFontSize(13);
-      doc.text(userData.name || '', 35, 68);
+      doc.text(userData.name || '', 32, 85);
 
       // 2. Registration ID (Bold)
       doc.setFontSize(11);
-      doc.text(regId || '', 150, 45); 
+      doc.text(regId || '', 155, 95); 
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
-      doc.text(userData.domain || '', 68, 79);
+      doc.text(userData.domain || '', 130, 28);
 
       // 4. Internship Duration Number only (e.g. 1, 2, or 3) (Bold)
       doc.setFontSize(12);
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
-      doc.text(durationNum, 42, 115);
+      doc.text(durationNum, 120, 150);
 
       // 5. Start Date (Bold)
-      doc.text(userData.startDate || '', 105, 115);
+      doc.text(userData.startDate || '', 105, 35);
 
       // 6. End Date (Bold) - Adjust X and Y coordinates as per your template layout
-      doc.text(userData.endDate || '', 145, 115);
+      doc.text(userData.endDate || '', 105, 60);
 
       // Save the final PDF
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
