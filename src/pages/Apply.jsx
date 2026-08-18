@@ -2,12 +2,22 @@ import { useState } from 'react';
 import { User, Mail, Phone, Code, Send, CheckCircle, AlertCircle, Briefcase, Calendar, Info } from 'lucide-react';
 
 const Apply = () => {
+  // Aaj ki current date nikalne ka tareeka (DD/MM/YYYY format ya YYYY-MM-DD ke liye)
+  const getTodayDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}/${month}/${year}`; // Certificate/Offer letter ke format ke mutabiq
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     whatsapp: '',
     domain: 'Frontend Development',
-    duration: '1 Month' // NAYA: Default duration
+    duration: '1 Month',
+    startDate: getTodayDate() // Automatically current date set ho jayegi
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successData, setSuccessData] = useState(null);
@@ -22,11 +32,17 @@ const Apply = () => {
     setIsSubmitting(true);
     setError(null);
 
+    // Ensure current date is synced right before submitting
+    const finalData = {
+      ...formData,
+      startDate: getTodayDate()
+    };
+
     try {
       const response = await fetch('https://velystra-backend.onrender.com/api/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(finalData)
       });
       
       const data = await response.json();
@@ -127,7 +143,7 @@ const Apply = () => {
                 </div>
               </div>
 
-              {/* TRANSPARENCY NOTE WALA BOX YAHAN HAI */}
+              {/* TRANSPARENCY NOTE WALA BOX */}
               <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-2 text-sm text-blue-900">
                 <h4 className="font-bold flex items-center gap-2 mb-2">
                   <Info size={16} className="text-blue-700" /> Transparent Fee Structure
