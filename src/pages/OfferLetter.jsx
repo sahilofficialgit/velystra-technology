@@ -63,7 +63,7 @@ const OfferLetter = () => {
 
       // 1. Student Name (Bold)
       doc.setFontSize(13);
-      doc.text(userData.name || '', 32, 85);
+      doc.text(userData.name || '', 32, 130);
 
       // 2. Registration ID (Bold)
       doc.setFontSize(11);
@@ -71,12 +71,12 @@ const OfferLetter = () => {
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
-      doc.text(userData.domain || '', 130, 28);
+      doc.text(userData.domain || '', 155, 550);
 
       // 4. Internship Duration Number only (e.g. 1, 2, or 3) (Bold)
       doc.setFontSize(12);
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
-      doc.text(durationNum, 120, 150);
+      doc.text(durationNum, 610, 855);
 
       // 5. Start Date (Bold)
       doc.text(userData.startDate || '', 105, 35);
