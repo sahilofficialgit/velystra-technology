@@ -68,11 +68,11 @@ const OfferLetter = () => {
 
       // 1. Student Name (Bold) - Yahan ab tu percentage daal sakta hai (jaise Width ka 15%, Height ka 23%)
       doc.setFontSize(13);
-      doc.text(userData.name || '', xPercent(15), yPercent(36.7));
+      doc.text(userData.name || '', xPercent(15), yPercent(35.7));
 
       // 2. Registration ID (Bold)
       doc.setFontSize(11);
-      doc.text(regId || '', xPercent(79), yPercent(31.5)); 
+      doc.text(regId || '', xPercent(78.7), yPercent(30)); 
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
