@@ -57,32 +57,37 @@ const OfferLetter = () => {
       // 1. Draw background image to fill exact A4 page size
       doc.addImage(img, 'PNG', 0, 0, 210, 297);
 
+      // --- PERCENTAGE HELPERS (0 to 100%) ---
+      // A4 width = 210mm, height = 297mm
+      const xPercent = (percent) => (percent * 210) / 100;
+      const yPercent = (percent) => (percent * 297) / 100;
+
       // --- TEXT STYLING (Black & Bold matching certificate style) ---
       doc.setTextColor(0, 0, 0); // Pure black color
       doc.setFont("helvetica", "bold");
 
-      // 1. Student Name (Bold)
+      // 1. Student Name (Bold) - Yahan ab tu percentage daal sakta hai (jaise Width ka 15%, Height ka 23%)
       doc.setFontSize(13);
-      doc.text(userData.name || '', 32, 130);
+      doc.text(userData.name || '', xPercent(15), yPercent(23));
 
       // 2. Registration ID (Bold)
       doc.setFontSize(11);
-      doc.text(regId || '', 155, 95); 
+      doc.text(regId || '', xPercent(70), yPercent(15)); 
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
-      doc.text(userData.domain || '', 155, 550);
+      doc.text(userData.domain || '', xPercent(32), yPercent(27));
 
-      // 4. Internship Duration Number only (e.g. 1, 2, or 3) (Bold)
+      // 4. Internship Duration Number only (Bold)
       doc.setFontSize(12);
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
-      doc.text(durationNum, 610, 855);
+      doc.text(durationNum, xPercent(18), yPercent(38));
 
       // 5. Start Date (Bold)
-      doc.text(userData.startDate || '', 105, 35);
+      doc.text(userData.startDate || '', xPercent(42), yPercent(38));
 
-      // 6. End Date (Bold) - Adjust X and Y coordinates as per your template layout
-      doc.text(userData.endDate || '', 105, 60);
+      // 6. End Date (Bold)
+      doc.text(userData.endDate || '', xPercent(65), yPercent(38));
 
       // Save the final PDF
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
