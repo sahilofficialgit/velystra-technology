@@ -76,7 +76,7 @@ const OfferLetter = () => {
 
       // 3. Domain (Bold)
       doc.setFontSize(13);
-      doc.text(userData.domain || '', xPercent(8), yPercent(42));
+      doc.text(userData.domain || '', xPercent(8), yPercent(43.3));
 
       // 4. Internship Duration Number only (Bold)
       doc.setFontSize(12);
