@@ -43,44 +43,47 @@ const OfferLetter = () => {
   const downloadOfferPDF = () => {
     if (!userData) return;
 
-    // Load template image to ensure it draws cleanly on PDF canvas
     const img = new Image();
     img.src = '/offer-template.png';
 
     img.onload = () => {
-      // Initialize jsPDF in A4 Portrait format (Units in millimeters: 210 x 297 mm)
+      // Initialize jsPDF in A4 Portrait format (Units: millimeters, 210 x 297 mm)
       const doc = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
 
-      const pageWidth = 210;
-      const pageHeight = 297;
+      // 1. Draw background image to fill exact A4 page size
+      doc.addImage(img, 'PNG', 0, 0, 210, 297);
 
-      // Draw background image to fit exact A4 dimensions without cropping
-      doc.addImage(img, 'PNG', 0, 0, pageWidth, pageHeight);
-
-      // Add dynamic text over the template using millimeter coordinates (X, Y)
-      doc.setTextColor(10, 25, 47); // Dark navy color
+      // --- TEXT STYLING (Black & Bold matching certificate style) ---
+      doc.setTextColor(0, 0, 0); // Pure black color
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      
-      // Name
+
+      // 1. Student Name (Bold)
+      doc.setFontSize(13);
       doc.text(userData.name || '', 35, 68);
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
-      
-      // Domain
+      // 2. Registration ID (Bold)
+      doc.setFontSize(11);
+      doc.text(regId || '', 150, 45); 
+
+      // 3. Domain (Bold)
+      doc.setFontSize(13);
       doc.text(userData.domain || '', 68, 79);
 
-      // Duration & Start Date
-      doc.text(`${userData.duration || '1'} Month(s)`, 42, 115);
+      // 4. Internship Duration Number only (e.g. 1, 2, or 3) (Bold)
+      doc.setFontSize(12);
+      // Extract only the number from duration (e.g. "1 Month" -> "1")
+      const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
+      doc.text(durationNum, 42, 115);
+
+      // 5. Start Date / Date Range (Bold)
       doc.text(userData.startDate || '', 105, 115);
 
-      // Save the generated full-size PDF
-      doc.save(`Velystra_Offer_Letter_${userData.name}.pdf`);
+      // Save the final PDF
+      doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
     };
   };
 
@@ -107,6 +110,7 @@ const OfferLetter = () => {
             <p className="text-sm text-slate-400">Name: <span className="text-white font-medium">{userData.name}</span></p>
             <p className="text-sm text-slate-400">Domain: <span className="text-white font-medium">{userData.domain}</span></p>
             <p className="text-sm text-slate-400">Duration: <span className="text-white font-medium">{userData.duration}</span></p>
+            <p className="text-sm text-slate-400">Start Date: <span className="text-white font-medium">{userData.startDate}</span></p>
             
             <button onClick={downloadOfferPDF} className="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition shadow-lg">
               <Download size={18}/> Download Offer Letter PDF
