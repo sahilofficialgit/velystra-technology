@@ -75,12 +75,14 @@ const OfferLetter = () => {
 
       // 4. Internship Duration Number only (e.g. 1, 2, or 3) (Bold)
       doc.setFontSize(12);
-      // Extract only the number from duration (e.g. "1 Month" -> "1")
       const durationNum = userData.duration ? userData.duration.toString().replace(/[^0-9]/g, '') : '1';
       doc.text(durationNum, 42, 115);
 
-      // 5. Start Date / Date Range (Bold)
+      // 5. Start Date (Bold)
       doc.text(userData.startDate || '', 105, 115);
+
+      // 6. End Date (Bold) - Adjust X and Y coordinates as per your template layout
+      doc.text(userData.endDate || '', 145, 115);
 
       // Save the final PDF
       doc.save(`Velystra_Offer_Letter_${userData.name.replace(/\s+/g, '_')}.pdf`);
@@ -111,6 +113,7 @@ const OfferLetter = () => {
             <p className="text-sm text-slate-400">Domain: <span className="text-white font-medium">{userData.domain}</span></p>
             <p className="text-sm text-slate-400">Duration: <span className="text-white font-medium">{userData.duration}</span></p>
             <p className="text-sm text-slate-400">Start Date: <span className="text-white font-medium">{userData.startDate}</span></p>
+            <p className="text-sm text-slate-400">End Date: <span className="text-white font-medium">{userData.endDate || 'N/A'}</span></p>
             
             <button onClick={downloadOfferPDF} className="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition shadow-lg">
               <Download size={18}/> Download Offer Letter PDF
