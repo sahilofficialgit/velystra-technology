@@ -85,7 +85,7 @@ const Verify = () => {
       }
 
       const options = {
-        key: "rzp_test_TQ2XYIDcQnSoSL", // <-- AAPKI RAZORPAY KEY
+        key: "rzp_live_TRLEpSR63D9D3O", // <-- AAPKI RAZORPAY KEY
         amount: orderData.order.amount,
         currency: "INR",
         name: "Velystra Technology",
