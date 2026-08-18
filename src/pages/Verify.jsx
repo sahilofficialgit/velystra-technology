@@ -23,7 +23,7 @@ const Verify = () => {
   const getPrices = (durationStr = "1 Month") => {
     if (durationStr.includes("3")) return { digital: 300, printed: 450 };
     if (durationStr.includes("6")) return { digital: 500, printed: 700 };
-    return { digital: 1, printed: 299 }; // Default 1 Month
+    return { digital: 150, printed: 299 }; // Default 1 Month
   };
 
   const handleVerify = async (e) => {
