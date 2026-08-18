@@ -1,15 +1,14 @@
 // src/pages/OfferLetter.jsx
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Download } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import html2pdf from 'html2pdf.js';
+import { jsPDF } from 'jspdf';
 
 const OfferLetter = () => {
   const [regId, setRegId] = useState('');
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
-  const offerRef = useRef();
 
   useEffect(() => {
     const idFromUrl = searchParams.get('regId');
@@ -41,22 +40,48 @@ const OfferLetter = () => {
     if (regId) autoSearch(regId);
   };
 
-  const downloadOffer = () => {
-    if (!offerRef.current) return;
-    
-    // Temporarily show the template for PDF generation
-    offerRef.current.style.display = 'block';
-    
-    const opt = {
-      filename: `Velystra_Offer_Letter_${userData?.name || 'Intern'}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'px', format: [1123, 794], orientation: 'landscape' }
-    };
+  const downloadOfferPDF = () => {
+    if (!userData) return;
 
-    html2pdf().from(offerRef.current).set(opt).save().then(() => {
-      offerRef.current.style.display = 'none';
-    });
+    // Load template image to ensure it draws cleanly on PDF canvas
+    const img = new Image();
+    img.src = '/offer-template.png';
+
+    img.onload = () => {
+      // Initialize jsPDF in A4 Portrait format (Units in millimeters: 210 x 297 mm)
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const pageWidth = 210;
+      const pageHeight = 297;
+
+      // Draw background image to fit exact A4 dimensions without cropping
+      doc.addImage(img, 'PNG', 0, 0, pageWidth, pageHeight);
+
+      // Add dynamic text over the template using millimeter coordinates (X, Y)
+      doc.setTextColor(10, 25, 47); // Dark navy color
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      
+      // Name
+      doc.text(userData.name || '', 35, 68);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      
+      // Domain
+      doc.text(userData.domain || '', 68, 79);
+
+      // Duration & Start Date
+      doc.text(`${userData.duration || '1'} Month(s)`, 42, 115);
+      doc.text(userData.startDate || '', 105, 115);
+
+      // Save the generated full-size PDF
+      doc.save(`Velystra_Offer_Letter_${userData.name}.pdf`);
+    };
   };
 
   return (
@@ -83,37 +108,11 @@ const OfferLetter = () => {
             <p className="text-sm text-slate-400">Domain: <span className="text-white font-medium">{userData.domain}</span></p>
             <p className="text-sm text-slate-400">Duration: <span className="text-white font-medium">{userData.duration}</span></p>
             
-            <button onClick={downloadOffer} className="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition shadow-lg">
+            <button onClick={downloadOfferPDF} className="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition shadow-lg">
               <Download size={18}/> Download Offer Letter PDF
             </button>
           </div>
         )}
-      </div>
-
-      {/* HIDDEN TEMPLATE FOR PDF GENERATION (Landscape A4 Dimensions) */}
-      <div 
-        ref={offerRef} 
-        style={{ 
-          display: 'none', 
-          width: '1123px', 
-          height: '794px', 
-          position: 'relative', 
-          backgroundImage: 'url("/offer-template.png")', 
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          fontFamily: 'Helvetica, Arial, sans-serif'
-        }}
-      >
-        {/* Dynamic Fields Placement (Adjust top & left according to your template design) */}
-        <div style={{ position: 'absolute', top: '310px', left: '140px', fontSize: '24px', fontWeight: 'bold', color: '#0A192F' }}>
-          {userData?.name}
-        </div>
-        <div style={{ position: 'absolute', top: '360px', left: '140px', fontSize: '20px', color: '#334155' }}>
-          {userData?.domain} Internship
-        </div>
-        <div style={{ position: 'absolute', top: '410px', left: '140px', fontSize: '18px', color: '#334155' }}>
-          Duration: {userData?.duration} | Start Date: {userData?.startDate}
-        </div>
       </div>
     </div>
   );
