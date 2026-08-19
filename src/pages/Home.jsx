@@ -4,7 +4,6 @@ import {
   Lightbulb, Monitor, Database, Layers, Clock, CheckCircle2, ShieldCheck, Award
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { SITE_CONFIG } from '../config/constants';
 
 // Data for Section 2: What We Offer
 const offerings = [
@@ -85,15 +84,13 @@ const Home = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a 
-              href={SITE_CONFIG.applyFormUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              to="/apply" 
               className="w-full sm:w-auto px-8 py-3.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors flex items-center justify-center gap-2"
             >
               Apply for Internship
               <ArrowRight size={18} />
-            </a>
+            </Link>
             <Link 
               to="/internships" 
               className="w-full sm:w-auto px-8 py-3.5 rounded-md bg-white/10 hover:bg-white/20 border border-white/10 text-white font-semibold transition-colors flex items-center justify-center"
@@ -230,7 +227,6 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 justify-between relative">
-            {/* Connecting Line for Desktop */}
             <div className="hidden md:block absolute top-6 left-10 right-10 h-0.5 bg-slate-200 z-0"></div>
             
             {steps.map((item, index) => (
@@ -252,7 +248,6 @@ const Home = () => {
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Challenges Card */}
             <div className="bg-slate-50 p-8 rounded-xl border border-slate-100 flex flex-col items-start">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
                 <Trophy className="text-blue-600" size={24} />
@@ -264,7 +259,6 @@ const Home = () => {
               </Link>
             </div>
 
-            {/* Verification Card */}
             <div className="bg-slate-50 p-8 rounded-xl border border-slate-100 flex flex-col items-start">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
                 <ShieldCheck className="text-blue-600" size={24} />
@@ -289,16 +283,14 @@ const Home = () => {
           <p className="text-blue-100 text-lg mb-10">Join our community today and start working on real-world projects that matter.</p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href={SITE_CONFIG.applyFormUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              to="/apply" 
               className="px-8 py-3.5 rounded-md bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-colors"
             >
               Apply for Internship
-            </a>
+            </Link>
             <a 
-              href="#" // You can replace this with Telegram link later
+              href="#" 
               className="px-8 py-3.5 rounded-md bg-blue-700 hover:bg-blue-800 border border-blue-500 text-white font-semibold transition-colors"
             >
               Join Our Community
