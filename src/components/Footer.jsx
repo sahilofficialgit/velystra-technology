@@ -37,7 +37,7 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Community</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-blue-400 transition-colors">LinkedIn</a></li>
+              <li><a href="https://www.linkedin.com/company/velystra-technology/" className="hover:text-blue-400 transition-colors">LinkedIn</a></li>
               <li><a href="#" className="hover:text-blue-400 transition-colors">Telegram</a></li>
               <li><a href="#" className="hover:text-blue-400 transition-colors">Discord (Coming Soon)</a></li>
             </ul>
