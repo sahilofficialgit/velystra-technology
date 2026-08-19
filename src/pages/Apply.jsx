@@ -71,7 +71,7 @@ const Apply = () => {
                   <User size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
                   <input type="text" name="name" value={formData.name} onChange={handleChange} required
                     className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="e.g. Sahil Shaikh"
+                    placeholder="Enter Your Name"
                   />
                 </div>
               </div>
@@ -82,7 +82,7 @@ const Apply = () => {
                   <Mail size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
                   <input type="email" name="email" value={formData.email} onChange={handleChange} required
                     className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    placeholder="e.g. sahil@example.com"
+                    placeholder="e.g. example@gmail.com"
                   />
                 </div>
               </div>
@@ -134,9 +134,9 @@ const Apply = () => {
                 </h4>
                 <p className="mb-2 text-blue-800">The internship program is free. A nominal processing fee is applicable <strong>only upon successful completion</strong> for your certificate:</p>
                 <ul className="list-disc ml-5 space-y-1 text-blue-800 font-medium">
-                  <li><strong>1 Month:</strong> ₹150 (Digital) | ₹299 (Printed + Courier)</li>
-                  <li><strong>3 Months:</strong> ₹300 (Digital) | ₹450 (Printed + Courier)</li>
-                  <li><strong>6 Months:</strong> ₹500 (Digital) | ₹700 (Printed + Courier)</li>
+                  <li><strong>1 Month:</strong> ₹150 (Digital) | ₹299 (Digital + Printed + Courier)</li>
+                  <li><strong>3 Months:</strong> ₹300 (Digital) | ₹450 (Digital + Printed + Courier)</li>
+                  <li><strong>6 Months:</strong> ₹500 (Digital) | ₹700 (Digital + Printed + Courier)</li>
                 </ul>
               </div>
 
