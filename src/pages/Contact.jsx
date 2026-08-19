@@ -55,37 +55,38 @@ const Contact = () => {
                   </div>
                 </a>
 
+                {/* LinkedIn Link */}
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/company/velystra-technology/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-4 hover:text-blue-300 transition-colors"
                 >
                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0">
                     <Globe size={20} />
                   </div>
                   <div>
-                    <a
-                      href="https://www.linkedin.com/company/velystra-technology/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-slate-400 mb-1 hover:text-blue-500 transition-colors block"
-                    >
+                    <span className="text-sm text-slate-400 mb-1 block">
                       LinkedIn
-                    </a>
+                    </span>
                     <p className="font-medium">Velystra Technology</p>
                   </div>
                 </a>
 
+                {/* Telegram Link */}
                 <a
-                  href="#"
+                  href="https://t.me/velystra"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-4 hover:text-blue-300 transition-colors"
                 >
                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0">
                     <MessageSquare size={20} />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400 mb-1">
+                    <span className="text-sm text-slate-400 mb-1 block">
                       Telegram Community
-                    </p>
+                    </span>
                     <p className="font-medium">@velystratechnology</p>
                   </div>
                 </a>
