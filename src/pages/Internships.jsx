@@ -1,6 +1,6 @@
 // src/pages/Internships.jsx
 import { Monitor, Database, Layers, CheckCircle2, Info, ArrowRight } from 'lucide-react';
-import { SITE_CONFIG } from '../config/constants';
+import { Link } from 'react-router-dom';
 
 const internshipPrograms = [
   {
@@ -142,14 +142,12 @@ const Internships = () => {
               <div className="bg-slate-50 md:w-72 p-6 md:p-8 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200">
                 <h4 className="font-bold text-slate-900 mb-2">Ready to start?</h4>
                 <p className="text-sm text-slate-500 mb-6">Apply now to secure your spot in the upcoming batch.</p>
-                <a 
-                  href={SITE_CONFIG.applyFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link 
+                  to="/apply"
                   className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition-colors"
                 >
                   Apply Now <ArrowRight size={18} />
-                </a>
+                </Link>
               </div>
 
             </div>
