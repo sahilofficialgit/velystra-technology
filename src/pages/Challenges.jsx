@@ -6,7 +6,7 @@ import { SITE_CONFIG } from '../config/constants';
 const upcomingChallenges = [
   {
     id: 1,
-    title: 'Frontend UI Challenge #01 (Example)',
+    title: 'Frontend UI Challenge #01',
     date: 'To be announced',
     duration: '48 Hours',
     difficulty: 'Intermediate',
@@ -94,7 +94,7 @@ const Challenges = () => {
           <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <Award className="text-blue-600" size={24} />
-              <h2 className="text-2xl font-bold text-slate-900">Example Prizes</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Prizes</h2>
             </div>
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
               <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
