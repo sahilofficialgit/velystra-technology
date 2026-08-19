@@ -116,8 +116,8 @@ const Verify = () => {
           }
         },
         prefill: {
-          name: result?.user?.name || "Student",
-          email: result?.user?.email || "student@gmail.com",
+          name: "",     // Blank chhod do taaki student khud bhare
+          email: "",    // Blank chhod do
         },
         theme: { color: "#2563EB" }
       };
