@@ -293,26 +293,25 @@ const Verify = () => {
           </div>
         </div>
       </div>
-    </div>
 
-    {/* VELYSTRA CUSTOM TEMPLATE DESIGN (HIDDEN) */}
-    {result && (
-      <div style={{ display: 'none' }}>
-        <div ref={certificateRef} style={{ width: '1123px', height: '794px', position: 'relative', fontFamily: "'Montserrat', 'Arial', sans-serif", backgroundImage: 'url("/template.png")', backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#fff' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
-            <div style={{ position: 'absolute', top: '10%', right: '4%', width: '15%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{certificateId}</div>
-            <div style={{ position: 'absolute', top: '43.5%', left: '0', width: '100%', textAlign: 'center', fontSize: '42px', fontWeight: 'bold', color: '#0a192f', textTransform: 'uppercase', letterSpacing: '2px' }}>{result.user.name}</div>
-            <div style={{ position: 'absolute', top: '54%', left: '40.5%', width: '2.5%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{String(result.user.duration).replace(/[^0-9]/g, '')}</div>
-            <div style={{ position: 'absolute', top: '53.5%', left: '57.5%', width: '25%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.domain}</div>
-            <div style={{ position: 'absolute', top: '57.5%', left: '36.5%', width: '22%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.startDate}</div>
-            <div style={{ position: 'absolute', top: '57.5%', left: '61.5%', width: '23%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.endDate}</div>
-            <div style={{ position: 'absolute', top: '80%', right: '17%', width: '18%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{issueDate}</div>
+      {/* VELYSTRA CUSTOM TEMPLATE DESIGN (HIDDEN) - Ab parent div ke andar hai */}
+      {result && (
+        <div style={{ display: 'none' }}>
+          <div ref={certificateRef} style={{ width: '1123px', height: '794px', position: 'relative', fontFamily: "'Montserrat', 'Arial', sans-serif", backgroundImage: 'url("/template.png")', backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#fff' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
+              <div style={{ position: 'absolute', top: '10%', right: '4%', width: '15%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{certificateId}</div>
+              <div style={{ position: 'absolute', top: '43.5%', left: '0', width: '100%', textAlign: 'center', fontSize: '42px', fontWeight: 'bold', color: '#0a192f', textTransform: 'uppercase', letterSpacing: '2px' }}>{result.user.name}</div>
+              <div style={{ position: 'absolute', top: '54%', left: '40.5%', width: '2.5%', textAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#0a192f' }}>{String(result.user.duration).replace(/[^0-9]/g, '')}</div>
+              <div style={{ position: 'absolute', top: '53.5%', left: '57.5%', width: '25%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.domain}</div>
+              <div style={{ position: 'absolute', top: '57.5%', left: '36.5%', width: '22%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.startDate}</div>
+              <div style={{ position: 'absolute', top: '57.5%', left: '61.5%', width: '23%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{result.user.endDate}</div>
+              <div style={{ position: 'absolute', top: '80%', right: '17%', width: '18%', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#0a192f' }}>{issueDate}</div>
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default Verify;
