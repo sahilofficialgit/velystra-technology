@@ -1,3 +1,4 @@
+// src/pages/Apply.jsx
 import { useState } from 'react';
 import { User, Mail, Phone, Code, Send, CheckCircle, AlertCircle, Briefcase, Calendar, Info } from 'lucide-react';
 
@@ -7,7 +8,7 @@ const Apply = () => {
     email: '',
     whatsapp: '',
     domain: 'Frontend Development',
-    duration: '1 Month' // NAYA: Default duration
+    duration: '1 Month'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successData, setSuccessData] = useState(null);
@@ -127,7 +128,7 @@ const Apply = () => {
                 </div>
               </div>
 
-              {/* UPDATED FEE STRUCTURE BOX (Digital Certificate is FREE) */}
+              {/* FEE STRUCTURE BOX */}
               <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mt-2 text-sm text-blue-900">
                 <h4 className="font-bold flex items-center gap-2 mb-2">
                   <Info size={16} className="text-blue-700" /> Transparent Fee Structure
@@ -178,6 +179,21 @@ const Apply = () => {
                   <span className="text-slate-500 text-sm font-medium">End Date</span>
                   <span className="font-bold text-slate-900">{successData.endDate}</span>
                 </div>
+              </div>
+
+              {/* 🚀 LINKEDIN SHARE MARKETING BOX */}
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-lg text-center">
+                <p className="text-blue-900 text-sm font-medium mb-3">
+                  Don't forget to share your offer letter on LinkedIn and tag <strong>Velystra Technology!</strong>
+                </p>
+                <a 
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=https://velystra-technology.vercel.app/offer-letter?regId=${successData.regId}`}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm transition-colors"
+                >
+                  Share on LinkedIn
+                </a>
               </div>
               
               <p className="text-sm text-slate-500 mt-6">
