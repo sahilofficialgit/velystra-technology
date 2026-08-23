@@ -86,11 +86,11 @@ const Internships = () => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center bg-white p-3 rounded border border-slate-200 shadow-sm">
                   <span className="text-sm font-medium text-slate-700">Digital Certificate</span>
-                  <span className="font-bold text-slate-900">₹150</span>
+                  <span className="font-bold text-slate-900">FREE FOR NOW</span>
                 </div>
                 <div className="flex justify-between items-center bg-white p-3 rounded border border-slate-200 shadow-sm">
                   <span className="text-sm font-medium text-slate-700">Printed + Courier Certificate</span>
-                  <span className="font-bold text-slate-900">₹299</span>
+                  <span className="font-bold text-slate-900">Internship Months: 1-₹299 | 3-₹450 | 6-₹700</span>
                 </div>
               </div>
             </div>
