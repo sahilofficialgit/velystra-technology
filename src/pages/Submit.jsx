@@ -206,7 +206,7 @@ const Submit = () => {
               )}
 
               <button type="submit" disabled={isSubmitting} className="w-full py-3.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-md">
-                {isSubmitting ? 'Submitting...' : <><Send size={18} /> Submit All 6 Tasks</>}
+                {isSubmitting ? 'Submitting...' : <><Send size={18} /> Submit All Tasks</>}
               </button>
             </form>
           ) : (
