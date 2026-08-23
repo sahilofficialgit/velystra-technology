@@ -1,13 +1,17 @@
+// src/pages/Submit.jsx
 import { useState } from 'react';
 import { Search, Link as LinkIcon, Send, CheckCircle, AlertCircle, UploadCloud } from 'lucide-react';
 
 const Submit = () => {
-  // NAYA: Ek link ki jagah 3 links ka state bana diya
+  // NAYA: 3 ki jagah 6 links ka state bana diya
   const [formData, setFormData] = useState({ 
     regId: '', 
     task1: '', 
     task2: '', 
-    task3: '' 
+    task3: '',
+    task4: '',
+    task5: '',
+    task6: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -15,9 +19,9 @@ const Submit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Check karna ki saare boxes bhare hain ya nahi
-    if (!formData.regId.trim() || !formData.task1.trim() || !formData.task2.trim() || !formData.task3.trim()) {
-      setError('Please fill all the task links.');
+    // Check karna ki saare 6 task boxes bhare hain ya nahi
+    if (!formData.regId.trim() || !formData.task1.trim() || !formData.task2.trim() || !formData.task3.trim() || !formData.task4.trim() || !formData.task5.trim() || !formData.task6.trim()) {
+      setError('Please fill all 6 task links.');
       return;
     }
     
@@ -25,14 +29,13 @@ const Submit = () => {
     setError('');
     setSuccessMsg('');
 
-    // ✨ THE MAGIC: Teeno links ko ek sath jod diya (with new line \n)
-    const combinedLinks = `Task 1: ${formData.task1} \nTask 2: ${formData.task2} \nTask 3: ${formData.task3}`;
+    // ✨ THE MAGIC: Saare 6 links ko ek sath jod diya (with new lines \n)
+    const combinedLinks = `Task 1: ${formData.task1} \nTask 2: ${formData.task2} \nTask 3: ${formData.task3} \nTask 4: ${formData.task4} \nTask 5: ${formData.task5} \nTask 6: ${formData.task6}`;
 
     try {
       const response = await fetch('https://velystra-backend.onrender.com/api/submit-task', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // Backend ko abhi bhi lag raha hai ki 1 hi link aa raha hai (taskLink)
         body: JSON.stringify({ 
           regId: formData.regId, 
           taskLink: combinedLinks 
@@ -43,7 +46,7 @@ const Submit = () => {
       if (response.ok && data.success) {
         setSuccessMsg(data.message);
         // Form clear kar do
-        setFormData({ regId: '', task1: '', task2: '', task3: '' }); 
+        setFormData({ regId: '', task1: '', task2: '', task3: '', task4: '', task5: '', task6: '' }); 
       } else {
         setError(data.message || 'Submission failed.');
       }
@@ -66,7 +69,7 @@ const Submit = () => {
             Submit Your Tasks
           </h1>
           <p className="text-slate-600 text-lg">
-            Upload your project links here to get them reviewed.
+            Upload your all 6 project links here to get them reviewed.
           </p>
         </div>
 
@@ -93,7 +96,7 @@ const Submit = () => {
               </div>
 
               <div className="pt-2 pb-1 border-b border-slate-100">
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Project Links</h3>
+                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">All 6 Project Links</h3>
               </div>
 
               {/* TASK 1 */}
@@ -142,6 +145,54 @@ const Submit = () => {
                     required
                   />
                 </div>
+              </div>
+
+              {/* TASK 4 */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Task 4 URL</label>
+                <div className="relative">
+                  <LinkIcon size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
+                  <input
+                    type="url"
+                    value={formData.task4}
+                    onChange={(e) => setFormData({ ...formData, task4: e.target.value })}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="https://github.com/..."
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* TASK 5 */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Task 5 URL</label>
+                <div className="relative">
+                  <LinkIcon size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
+                  <input
+                    type="url"
+                    value={formData.task5}
+                    onChange={(e) => setFormData({ ...formData, task5: e.target.value })}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="https://github.com/..."
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* TASK 6 */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Task 6 URL</label>
+                <div className="relative">
+                  <LinkIcon size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
+                  <input
+                    type="url"
+                    value={formData.task6}
+                    onChange={(e) => setFormData({ ...formData, task6: e.target.value })}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="https://github.com/..."
+                    required
+                  />
+                </div>
                 <p className="text-xs text-slate-500 mt-3 font-medium bg-slate-50 p-2 rounded">
                   ⚠️ Make sure all your links (Google Drive / GitHub) are set to "Public" so our team can review them.
                 </p>
@@ -155,7 +206,7 @@ const Submit = () => {
               )}
 
               <button type="submit" disabled={isSubmitting} className="w-full py-3.5 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-md">
-                {isSubmitting ? 'Submitting...' : <><Send size={18} /> Submit All Tasks</>}
+                {isSubmitting ? 'Submitting...' : <><Send size={18} /> Submit All 6 Tasks</>}
               </button>
             </form>
           ) : (
