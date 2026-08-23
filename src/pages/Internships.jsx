@@ -90,7 +90,7 @@ const Internships = () => {
                 </div>
                 <div className="flex justify-between items-center bg-white p-3 rounded border border-slate-200 shadow-sm">
                   <span className="text-sm font-medium text-slate-700">Printed + Courier Certificate</span>
-                  <span className="font-bold text-slate-900">Internship Months: 1-₹299 | 3-₹450 | 6-₹700</span>
+                  <span className="font-bold text-slate-900">Internship Months: 1M/₹299 | 3M/₹450 | 6M/₹700</span>
                 </div>
               </div>
             </div>
