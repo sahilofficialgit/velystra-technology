@@ -146,7 +146,7 @@ const Apply = () => {
               )}
 
               <button type="submit" disabled={isSubmitting} className="w-full py-3.5 mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex justify-center items-center gap-2 shadow-md">
-                {isSubmitting ? 'Submitting...' : <><Send size={18} /> Submit Application</>}
+                {isSubmitting ? 'Submitting Application...' : <><Send size={18} /> Submit Application</>}
               </button>
             </form>
           ) : (
@@ -155,47 +155,25 @@ const Apply = () => {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
                 <CheckCircle size={40} className="text-green-600" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Application Successful!</h2>
-              <p className="text-slate-600 mb-8">Welcome to Velystra Technology. Here are your internship details:</p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Application Submitted Successfully!</h2>
+              <p className="text-slate-600 mb-6">Thank you for applying to Velystra Technology. Your application is currently under review by our team.</p>
               
-              <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 text-left space-y-4">
-                <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+              <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 text-left space-y-4 max-w-md mx-auto">
+                <div className="flex justify-between items-center">
                   <span className="text-slate-500 text-sm font-medium">Registration ID</span>
-                  <span className="font-bold text-slate-900 bg-blue-100 text-blue-800 px-3 py-1 rounded-md tracking-wider">
+                  <span className="font-bold text-slate-900 bg-blue-100 text-blue-800 px-3 py-1 rounded-md tracking-wider font-mono">
                     {successData.regId}
                   </span>
                 </div>
-                <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                  <span className="text-slate-500 text-sm font-medium">Duration</span>
-                  <span className="font-bold text-slate-900">{successData.duration}</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                  <span className="text-slate-500 text-sm font-medium">Start Date</span>
-                  <span className="font-bold text-slate-900">{successData.startDate}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500 text-sm font-medium">End Date</span>
-                  <span className="font-bold text-slate-900">{successData.endDate}</span>
-                </div>
               </div>
 
-              {/* LINKEDIN SHARE MARKETING BOX */}
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-lg text-center">
-                <p className="text-blue-900 text-sm font-medium mb-3">
-                  Don't forget to share your offer letter on LinkedIn and tag <strong>Velystra Technology!</strong>
-                </p>
-                <a 
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=https://velystra-technology.vercel.app/offer-letter?regId=${successData.regId}`}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm transition-colors"
-                >
-                  Share on LinkedIn
-                </a>
+              <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 text-sm max-w-md mx-auto">
+                ⏳ <strong>What's Next?</strong><br/>
+                Our team will review your application. Once approved, your official offer letter will be sent directly to your email within 10-24 hours.
               </div>
               
-              <p className="text-sm text-slate-500 mt-6">
-                Please save your Registration ID. You will need it to track your tasks and generate your certificate.
+              <p className="text-xs text-slate-400 mt-6">
+                Please save your Registration ID safely for future task submissions.
               </p>
             </div>
           )}
