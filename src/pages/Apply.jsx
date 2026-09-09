@@ -99,7 +99,7 @@ const Apply = () => {
                 </div>
               </div>
 
-              {/* DROP-DOWN GRID (Domain & Duration) */}
+              {/* DOMAIN & FIXED 1-MONTH DURATION GRID */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Select Domain</label>
@@ -118,12 +118,12 @@ const Apply = () => {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Duration</label>
                   <div className="relative">
                     <Calendar size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
-                    <select name="duration" value={formData.duration} onChange={handleChange}
-                      className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none bg-white">
-                      <option value="1 Month">1 Month</option>
-                      <option value="3 Months">3 Months</option>
-                      <option value="6 Months">6 Months</option>
-                    </select>
+                    <input 
+                      type="text" 
+                      value="1 Month" 
+                      disabled 
+                      className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none bg-slate-100 text-slate-700 text-sm font-medium cursor-not-allowed"
+                    />
                   </div>
                 </div>
               </div>
@@ -133,12 +133,10 @@ const Apply = () => {
                 <h4 className="font-bold flex items-center gap-2 mb-2">
                   <Info size={16} className="text-blue-700" /> Transparent Fee Structure
                 </h4>
-                <p className="mb-2 text-blue-800">The internship training and digital certificate are <strong>100% Free</strong>. Optional printed/courier certificate charges apply if requested:</p>
-                <ul className="list-disc ml-5 space-y-1 text-blue-800 font-medium">
-                  <li><strong>1 Month:</strong> <span className="text-green-700">FREE (Digital)</span> | ₹299 (Printed + Courier)</li>
-                  <li><strong>3 Months:</strong> <span className="text-green-700">FREE (Digital)</span> | ₹450 (Printed + Courier)</li>
-                  <li><strong>6 Months:</strong> <span className="text-green-700">FREE (Digital)</span> | ₹700 (Printed + Courier)</li>
-                </ul>
+                <p className="mb-2 text-blue-800">The 1-month internship training and digital certificate are <strong>100% Free</strong>. Optional printed/courier certificate charge:</p>
+                <p className="text-blue-900 font-medium">
+                  👉 <span className="text-green-700 font-bold">FREE (Digital)</span> | ₹299 (Optional Printed + Courier)
+                </p>
               </div>
 
               {error && (
@@ -181,7 +179,7 @@ const Apply = () => {
                 </div>
               </div>
 
-              {/* 🚀 LINKEDIN SHARE MARKETING BOX */}
+              {/* LINKEDIN SHARE MARKETING BOX */}
               <div className="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-lg text-center">
                 <p className="text-blue-900 text-sm font-medium mb-3">
                   Don't forget to share your offer letter on LinkedIn and tag <strong>Velystra Technology!</strong>
