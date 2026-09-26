@@ -1,23 +1,11 @@
 // src/pages/Challenges.jsx
-import { Trophy, Calendar, Clock, Code, Award, AlertCircle, CheckCircle2, ChevronRight } from 'lucide-react';
-import { SITE_CONFIG } from '../config/constants';
+import React, { useState, useEffect } from 'react';
+import { Trophy, Calendar, Clock, Code, Award, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-// Placeholder Data for Challenges
-const upcomingChallenges = [
-  {
-    id: 1,
-    title: 'Frontend UI Challenge #01',
-    date: 'To be announced',
-    duration: '48 Hours',
-    difficulty: 'Intermediate',
-    description: 'Build a fully responsive, pixel-perfect dashboard interface using React and Tailwind CSS based on a provided Figma design.',
-    status: 'Upcoming'
-  }
-];
-
-const pastChallenges = [
-  // Empty array for now, we will show a "No past challenges" message
-];
+// Dynamic API Base URL configuration for Local & Production
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const rules = [
   "All code must be original and written during the competition timeframe.",
@@ -29,6 +17,47 @@ const rules = [
 ];
 
 const Challenges = () => {
+  const [challenges, setChallenges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem('velystra_token');
+  const user = JSON.parse(localStorage.getItem('velystra_user') || '{}');
+
+  useEffect(() => {
+    fetchChallenges();
+  }, []);
+
+  const fetchChallenges = async () => {
+    try {
+      setLoading(true);
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const response = await axios.get(`${API_BASE_URL}/api/challenges`, { headers });
+      if (response.data.success) {
+        setChallenges(response.data.challenges);
+      }
+    } catch (err) {
+      console.error('Error fetching challenges:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleParticipateClick = () => {
+    if (!token) {
+      alert('Please login or sign up to participate in challenges!');
+      navigate('/login');
+    } else if (user.role === 'STUDENT') {
+      navigate('/student-dashboard');
+    } else {
+      alert('Admin accounts cannot submit challenge work.');
+    }
+  };
+
+  const currentDate = new Date();
+  const runningChallenges = challenges.filter(ch => !ch.deadline || new Date(ch.deadline) >= currentDate);
+  const pastChallenges = challenges.filter(ch => ch.deadline && new Date(ch.deadline) < currentDate);
+
   return (
     <div className="w-full bg-slate-50 min-h-screen pb-20">
       
@@ -36,56 +65,68 @@ const Challenges = () => {
       <div className="bg-slate-900 text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Trophy size={48} className="mx-auto text-blue-400 mb-6" />
-          <h1 className="text-3xl md:text-5xl font-bold mb-6">Velystra Coding Challenges</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">Velystra Campus Leagues & Challenges</h1>
           <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-            Test your skills, compete with other developers, and build amazing projects under time pressure.
+            Test your skills, compete with peers, and earn campus points for your global and college rankings.
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 space-y-16">
         
-        {/* UPCOMING CHALLENGES SECTION */}
+        {/* ACTIVE / RUNNING CHALLENGES SECTION */}
         <section>
           <div className="flex items-center gap-2 mb-8">
             <Calendar className="text-blue-600" size={24} />
-            <h2 className="text-2xl font-bold text-slate-900">Upcoming Challenges</h2>
+            <h2 className="text-2xl font-bold text-slate-900">Active & Upcoming Challenges</h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            {upcomingChallenges.map((challenge) => (
-              <div key={challenge.id} className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden relative">
-                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
-                <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 justify-between md:items-center">
-                  <div className="flex-1">
-                    <div className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide rounded-full mb-4">
-                      {challenge.status}
+          {loading ? (
+            <div className="text-center py-12 text-slate-500">Loading challenges...</div>
+          ) : runningChallenges.length === 0 ? (
+            <div className="bg-white p-12 rounded-xl border border-slate-200 text-center text-slate-500">
+              No active challenges right now. Check back soon!
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6">
+              {runningChallenges.map((challenge) => (
+                <div key={challenge.id} className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden relative">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                  <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 justify-between md:items-center">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide rounded-full">
+                          +{challenge.points} Points
+                        </span>
+                        {challenge.college && (
+                          <span className="px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold uppercase tracking-wide rounded-full">
+                            🏛️ {challenge.college.name} Exclusive
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">{challenge.title}</h3>
+                      <p className="text-slate-600 mb-6 max-w-3xl">{challenge.description}</p>
+                      
+                      <div className="flex flex-wrap gap-4 md:gap-8">
+                        <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
+                          <Clock size={16} className="text-slate-400" /> Deadline: {challenge.deadline ? new Date(challenge.deadline).toLocaleDateString() : 'No Deadline'}
+                        </div>
+                      </div>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">{challenge.title}</h3>
-                    <p className="text-slate-600 mb-6 max-w-3xl">{challenge.description}</p>
                     
-                    <div className="flex flex-wrap gap-4 md:gap-8">
-                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
-                        <Calendar size={16} className="text-slate-400" /> Date: {challenge.date}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
-                        <Clock size={16} className="text-slate-400" /> Duration: {challenge.duration}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-700 font-medium">
-                        <Code size={16} className="text-slate-400" /> Level: {challenge.difficulty}
-                      </div>
+                    <div className="shrink-0 mt-4 md:mt-0">
+                      <button 
+                        onClick={handleParticipateClick}
+                        className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow flex items-center justify-center gap-2 text-sm"
+                      >
+                        Participate Now <ArrowRight size={16} />
+                      </button>
                     </div>
-                  </div>
-                  
-                  <div className="shrink-0 mt-4 md:mt-0">
-                    <button className="w-full md:w-auto bg-slate-100 text-slate-400 cursor-not-allowed font-medium px-6 py-3 rounded-md transition-colors">
-                      Registration Opening Soon
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -94,36 +135,30 @@ const Challenges = () => {
           <section className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <Award className="text-blue-600" size={24} />
-              <h2 className="text-2xl font-bold text-slate-900">Prizes</h2>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
-              <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
-              <p className="text-sm text-amber-800">
-                The rewards below are placeholder examples. Actual prizes will be announced when a live contest is scheduled.
-              </p>
+              <h2 className="text-2xl font-bold text-slate-900">Campus League Rewards</h2>
             </div>
             
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-yellow-500">🥇</span>
-                  <span className="font-semibold text-slate-800">1st Place</span>
+                  <span className="font-semibold text-slate-800">1st Place Global Rank</span>
                 </div>
-                <span className="text-slate-600 text-sm">₹700 Cash + Free 6-Month Internship + Winner Certificate</span>
+                <span className="text-slate-600 text-sm">₹700 Cash + Free 6-Month Internship</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-slate-400">🥈</span>
-                  <span className="font-semibold text-slate-800">2nd Place</span>
+                  <span className="font-semibold text-slate-800">2nd Place Global Rank</span>
                 </div>
                 <span className="text-slate-600 text-sm">₹500 Cash + Free 3-Month Internship</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-amber-600">🥉</span>
-                  <span className="font-semibold text-slate-800">3rd Place</span>
+                  <span className="font-semibold text-slate-800">Top College Performer</span>
                 </div>
-                <span className="text-slate-600 text-sm">Free 1-Month Internship</span>
+                <span className="text-slate-600 text-sm">Recognition Certificate + Global Badge</span>
               </div>
             </div>
           </section>
@@ -145,26 +180,6 @@ const Challenges = () => {
           </section>
 
         </div>
-
-        {/* PAST CHALLENGES SECTION */}
-        <section>
-          <div className="flex items-center gap-2 mb-8">
-            <Clock className="text-slate-400" size={24} />
-            <h2 className="text-2xl font-bold text-slate-900">Past Challenges</h2>
-          </div>
-          
-          {pastChallenges.length === 0 ? (
-            <div className="bg-white p-12 rounded-xl border border-slate-200 border-dashed text-center">
-              <Code size={48} className="mx-auto text-slate-300 mb-4" />
-              <h3 className="text-lg font-bold text-slate-700 mb-2">No Past Challenges Yet</h3>
-              <p className="text-slate-500 max-w-md mx-auto">
-                Our first coding challenge will be announced soon. Check back later to see the archive of completed competitions.
-              </p>
-            </div>
-          ) : (
-            <div>{/* Map past challenges here when available */}</div>
-          )}
-        </section>
 
       </div>
     </div>

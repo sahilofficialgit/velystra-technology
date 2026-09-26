@@ -1,7 +1,7 @@
 // src/pages/Home.jsx
 import { 
   ArrowRight, Code, Terminal, BookOpen, Users, Trophy, Briefcase, 
-  Lightbulb, Monitor, Database, Layers, Clock, CheckCircle2, ShieldCheck, Award
+  Lightbulb, Monitor, Database, Layers, Clock, CheckCircle2, ShieldCheck, Award, UserPlus
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -72,7 +72,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-sm font-medium mb-6">
             <Code size={16} />
-            <span>Developer Learning Community</span>
+            <span>Enterprise Student & College Ecosystem</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
@@ -80,22 +80,24 @@ const Home = () => {
           </h1>
           
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-300 mb-10 leading-relaxed">
-            Build practical technology skills through internships, real-world projects, technical challenges and developer-focused learning.
+            Build practical technology skills through campus league challenges, internships, real-world projects, and global developer rankings.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* ONLY 2 BUTTONS: Sign Up & View Leaderboard */}
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link 
-              to="/apply" 
-              className="w-full sm:w-auto px-8 py-3.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors flex items-center justify-center gap-2"
+              to="/signup" 
+              className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2"
             >
-              Apply for Internship
-              <ArrowRight size={18} />
+              <UserPlus size={18} />
+              Sign Up / Register
             </Link>
             <Link 
-              to="/internships" 
-              className="w-full sm:w-auto px-8 py-3.5 rounded-md bg-white/10 hover:bg-white/20 border border-white/10 text-white font-semibold transition-colors flex items-center justify-center"
+              to="/leaderboard" 
+              className="px-8 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold transition-all flex items-center gap-2"
             >
-              Explore Programs
+              <Trophy size={18} className="text-amber-400" />
+              View Leaderboard
             </Link>
           </div>
         </div>
@@ -109,7 +111,7 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-slate-900 mb-6">What is Velystra Technology?</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto mb-8 rounded-full"></div>
           <p className="text-lg text-slate-600 leading-relaxed">
-            Velystra Technology is a technology-focused learning and developer community dedicated to helping students and aspiring developers bridge the gap between academic learning and industry requirements. We provide a structured environment to build practical skills through hands-on projects, technical training, and coding competitions.
+            Velystra Technology is an enterprise-grade multi-tenant platform dedicated to helping universities, colleges, and students bridge the gap between academic learning and industry standards through competitive campus leagues, secure PRN verification, and practical internships.
           </p>
         </div>
       </section>
@@ -209,7 +211,7 @@ const Home = () => {
               <Code size={48} className="text-blue-500 mb-6" />
               <h3 className="text-2xl font-bold mb-4">No Fake Promises</h3>
               <p className="text-slate-400">
-                We are a developer community, not a college. We do not offer guaranteed placements, fake affiliations, or misleading certifications. We offer one thing: <strong className="text-white">a platform to build real skills.</strong>
+                We are a developer ecosystem, not a college. We provide a robust multi-tenant platform for colleges to host events and students to build real skills and global recognition.
               </p>
             </div>
           </div>
@@ -223,7 +225,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Your journey from application to project completion.</p>
+            <p className="text-slate-600 max-w-2xl mx-auto">Your journey from college onboarding to project competition.</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 justify-between relative">
@@ -252,10 +254,10 @@ const Home = () => {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
                 <Trophy className="text-blue-600" size={24} />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Coding Challenges</h3>
-              <p className="text-slate-600 mb-8 flex-grow">Participate in our upcoming coding competitions to test your logic, improve problem-solving, and compete with other developers.</p>
-              <Link to="/challenges" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2">
-                Explore Challenges <ArrowRight size={18} />
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">Campus Leagues & Leaderboard</h3>
+              <p className="text-slate-600 mb-8 flex-grow">Compete in global and college-specific challenges, track your campus score, and earn recognition on the leaderboard.</p>
+              <Link to="/leaderboard" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2">
+                View Public Leaderboard <ArrowRight size={18} />
               </Link>
             </div>
 
@@ -264,7 +266,7 @@ const Home = () => {
                 <ShieldCheck className="text-blue-600" size={24} />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">Certificate Verification</h3>
-              <p className="text-slate-600 mb-8 flex-grow">Employers and recruiters can easily verify the authenticity of any Velystra Technology internship certificate using its unique ID.</p>
+              <p className="text-slate-600 mb-8 flex-grow">Recruiters and institutions can easily verify the authenticity of any Velystra internship certificate using its unique ID.</p>
               <Link to="/verify" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2">
                 Verify Certificate <ArrowRight size={18} />
               </Link>
@@ -279,22 +281,24 @@ const Home = () => {
       <section className="py-20 bg-blue-600 text-white text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Award size={48} className="mx-auto mb-6 text-blue-200" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to build your next skill?</h2>
-          <p className="text-blue-100 text-lg mb-10">Join our community today and start working on real-world projects that matter.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to join the Campus League?</h2>
+          <p className="text-blue-100 text-lg mb-10">Register today with your college code or explore the public leaderboard.</p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link 
-              to="/apply" 
-              className="px-8 py-3.5 rounded-md bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-colors"
+              to="/signup" 
+              className="px-8 py-3.5 rounded-xl bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-all shadow-md flex items-center gap-2"
             >
-              Apply for Internship
+              <UserPlus size={18} />
+              Create Account
             </Link>
-            <a 
-              href="#" 
-              className="px-8 py-3.5 rounded-md bg-blue-700 hover:bg-blue-800 border border-blue-500 text-white font-semibold transition-colors"
+            <Link 
+              to="/leaderboard" 
+              className="px-8 py-3.5 rounded-xl bg-blue-700 hover:bg-blue-800 border border-blue-500 text-white font-semibold transition-all flex items-center gap-2"
             >
-              Join Our Community
-            </a>
+              <Trophy size={18} className="text-amber-400" />
+              View Leaderboard
+            </Link>
           </div>
         </div>
       </section>

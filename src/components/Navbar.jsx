@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { SITE_CONFIG } from "../config/constants";
 
-// Apne logo file ka sahi path aur extension yahan update karein
 import logo from "../assets/logo.png.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
-  // Scroll effect ke liye
+  const token = localStorage.getItem("velystra_token");
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -26,13 +26,16 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Internships", path: "/internships" },
-    { name: "Submit Task", path: "/submit" },
     { name: "Challenges", path: "/challenges" },
-    { name: "Get Certificate", path: "/verify" }, 
-    { name: "Validate ID", path: "/validate" }, 
+    { name: "Leaderboard", path: "/leaderboard" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <nav
@@ -73,16 +76,23 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Right: Apply Now Button & Mobile Menu Toggle */}
-          <div className="flex items-center gap-4">
-            
-            {/* YAHAN DESKTOP BUTTON UPDATE HUA HAI */}
-            <NavLink
-              to="/apply"
-              className="hidden md:inline-block bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-6 py-2.5 rounded-md transition-colors"
-            >
-              Apply Now
-            </NavLink>
+          {/* Right: Only Sign Up (or Logout if logged in) */}
+          <div className="flex items-center gap-3">
+            {token ? (
+              <button
+                onClick={handleLogout}
+                className="hidden md:inline-block bg-red-50 text-red-600 hover:bg-red-600 hover:text-white text-sm font-medium px-5 py-2.5 rounded-md transition-all border border-red-200"
+              >
+                Logout
+              </button>
+            ) : (
+              <NavLink
+                to="/signup"
+                className="hidden md:inline-block bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-5 py-2.5 rounded-md transition-colors shadow-sm"
+              >
+                Sign Up
+              </NavLink>
+            )}
 
             {/* Mobile Hamburger Icon */}
             <button
@@ -98,7 +108,7 @@ const Navbar = () => {
       {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t border-slate-100">
-          <div className="px-4 py-6 space-y-4 flex flex-col">
+          <div className="px-4 py-6 space-y-3 flex flex-col">
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
@@ -116,14 +126,24 @@ const Navbar = () => {
               </NavLink>
             ))}
             
-            {/* YAHAN MOBILE BUTTON UPDATE HUA HAI */}
-            <NavLink
-              to="/apply"
-              onClick={() => setIsOpen(false)}
-              className="mt-4 block text-center bg-blue-700 hover:bg-blue-800 text-white font-medium px-4 py-3 rounded-md transition-colors"
-            >
-              Apply Now
-            </NavLink>
+            <div className="pt-4 border-t border-slate-100">
+              {token ? (
+                <button
+                  onClick={() => { setIsOpen(false); handleLogout(); }}
+                  className="w-full text-center bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-medium px-4 py-2.5 rounded-md transition-colors"
+                >
+                  Logout
+                </button>
+              ) : (
+                <NavLink
+                  to="/signup"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-center bg-blue-700 hover:bg-blue-800 text-white font-medium px-4 py-3 rounded-md transition-colors shadow-sm"
+                >
+                  Sign Up
+                </NavLink>
+              )}
+            </div>
           </div>
         </div>
       )}

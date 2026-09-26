@@ -11,6 +11,11 @@ import Validate from './pages/Validate';
 import Apply from './pages/Apply';
 import Submit from './pages/Submit';
 import OfferLetter from './pages/OfferLetter';
+import Leaderboard from './pages/Learderboard';
+import StudentDashboard from './pages/StudentDashboard';
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import Signup from './components/Signup';
 
 function App() {
   return (
@@ -30,7 +35,13 @@ function App() {
             <Route path="/validate" element={<Validate />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/submit" element={<Submit />} />
+            <Route path="/Login" element={<Login />} />
             <Route path="/offer-letter" element={<OfferLetter />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/student-dashboard" element={<StudentDashboard />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/signup" element={<Signup />} />
+            
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
                 <h1 className="text-6xl font-bold text-slate-900 mb-4">404</h1>

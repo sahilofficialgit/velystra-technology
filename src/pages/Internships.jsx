@@ -1,6 +1,7 @@
 // src/pages/Internships.jsx
-import { Monitor, Database, Layers, CheckCircle2, Info, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Monitor, Database, Layers, CheckCircle2, Info, ArrowRight, UploadCloud, Award, ShieldCheck } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const internshipPrograms = [
   {
@@ -33,31 +34,77 @@ const internshipPrograms = [
 ];
 
 const Internships = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full bg-slate-50 min-h-screen pb-20">
       
       {/* HEADER SECTION */}
       <div className="bg-slate-900 text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold mb-6">Velystra Internship Programs</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">Velystra Internship & Student Portal</h1>
           <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-            Practical, project-based learning experiences designed to help you build a strong portfolio and real-world developer skills.
+            Practical project-based learning, task submissions, and certificate management all in one place.
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
         
+        {/* --- INTERNSHIP TOOLS HUB (Submit Task, Get Certificate, Validate) --- */}
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8 mb-12 relative z-10">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">🎓 Internship Portal & Quick Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <button 
+              onClick={() => navigate('/submit')} 
+              className="bg-slate-900 hover:bg-blue-600 text-white p-5 rounded-xl text-left transition-all group shadow-md flex items-center justify-between"
+            >
+              <div>
+                <UploadCloud className="text-blue-400 group-hover:text-white mb-2" size={24} />
+                <h4 className="font-bold text-base">Submit Task</h4>
+                <p className="text-xs text-slate-400 group-hover:text-blue-100 mt-1">Upload weekly internship assignments.</p>
+              </div>
+              <ArrowRight size={20} className="text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+            </button>
+
+            <button 
+              onClick={() => navigate('/verify')} 
+              className="bg-slate-900 hover:bg-emerald-600 text-white p-5 rounded-xl text-left transition-all group shadow-md flex items-center justify-between"
+            >
+              <div>
+                <Award className="text-emerald-400 group-hover:text-white mb-2" size={24} />
+                <h4 className="font-bold text-base">Get Certificate</h4>
+                <p className="text-xs text-slate-400 group-hover:text-emerald-100 mt-1">Download your completion certificate.</p>
+              </div>
+              <ArrowRight size={20} className="text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+            </button>
+
+            <button 
+              onClick={() => navigate('/validate')} 
+              className="bg-slate-900 hover:bg-amber-600 text-white p-5 rounded-xl text-left transition-all group shadow-md flex items-center justify-between"
+            >
+              <div>
+                <ShieldCheck className="text-amber-400 group-hover:text-white mb-2" size={24} />
+                <h4 className="font-bold text-base">Validate Certificate</h4>
+                <p className="text-xs text-slate-400 group-hover:text-amber-100 mt-1">Verify authenticity via Certificate ID.</p>
+              </div>
+              <ArrowRight size={20} className="text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+            </button>
+
+          </div>
+        </div>
+
         {/* TRANSPARENCY / PRICING BANNER */}
-        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6 md:p-8 mb-12 relative z-10">
+        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6 md:p-8 mb-12">
           <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
             
             {/* Free Offerings */}
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                 <Info className="text-blue-600" size={24} />
                 100% Free Training & Evaluation
-              </h2>
+              </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex items-center gap-2 text-slate-700">
                   <CheckCircle2 className="text-green-500 shrink-0" size={18} /> <span>Registration: Free</span>
@@ -72,14 +119,11 @@ const Internships = () => {
                   <CheckCircle2 className="text-green-500 shrink-0" size={18} /> <span>Evaluation: Free</span>
                 </div>
               </div>
-              <p className="text-sm text-slate-500 mt-4">
-                The internship itself does not require any registration or training fee. You can complete the program and gain skills at absolutely zero cost.
-              </p>
             </div>
 
             {/* Optional Certificate Pricing */}
             <div className="flex-1 bg-slate-50 p-6 rounded-lg border border-slate-100 w-full">
-              <h3 className="font-bold text-slate-900 mb-3">Optional Certificate Processing</h3>
+              <h4 className="font-bold text-slate-900 mb-3">Optional Certificate Processing</h4>
               <p className="text-sm text-slate-600 mb-4">
                 If you wish to receive a verifiable certificate after successful completion, nominal processing fees apply:
               </p>
@@ -90,7 +134,7 @@ const Internships = () => {
                 </div>
                 <div className="flex justify-between items-center bg-white p-3 rounded border border-slate-200 shadow-sm">
                   <span className="text-sm font-medium text-slate-700">Printed + Courier Certificate</span>
-                  <span className="font-bold text-slate-900">Internship Months: 1M/₹299 | 3M/₹450 | 6M/₹700</span>
+                  <span className="font-bold text-slate-900 text-xs">1M/₹299 | 3M/₹450 | 6M/₹700</span>
                 </div>
               </div>
             </div>
@@ -103,14 +147,13 @@ const Internships = () => {
           {internshipPrograms.map((program) => (
             <div key={program.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row">
               
-              {/* Left Content */}
               <div className="p-6 md:p-8 flex-1">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-blue-50 rounded-lg">
                     {program.icon}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-900">{program.title}</h2>
+                    <h3 className="text-2xl font-bold text-slate-900">{program.title}</h3>
                     <span className="inline-block mt-1 px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-full">
                       Duration: {program.duration}
                     </span>
@@ -138,7 +181,6 @@ const Internships = () => {
                 </div>
               </div>
 
-              {/* Right CTA Area */}
               <div className="bg-slate-50 md:w-72 p-6 md:p-8 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-200">
                 <h4 className="font-bold text-slate-900 mb-2">Ready to start?</h4>
                 <p className="text-sm text-slate-500 mb-6">Apply now to secure your spot in the upcoming batch.</p>
