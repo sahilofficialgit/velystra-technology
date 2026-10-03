@@ -88,7 +88,7 @@ const Submit = () => {
                     type="text"
                     value={formData.regId}
                     onChange={(e) => setFormData({ ...formData, regId: e.target.value.replace(/-/g, '').toUpperCase() })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm uppercase"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 uppercase bg-white"
                     placeholder="e.g. VTFE26123456"
                     required
                   />
@@ -108,7 +108,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task1}
                     onChange={(e) => setFormData({ ...formData, task1: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
@@ -124,7 +124,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task2}
                     onChange={(e) => setFormData({ ...formData, task2: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
@@ -140,7 +140,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task3}
                     onChange={(e) => setFormData({ ...formData, task3: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
@@ -156,7 +156,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task4}
                     onChange={(e) => setFormData({ ...formData, task4: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
@@ -172,7 +172,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task5}
                     onChange={(e) => setFormData({ ...formData, task5: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
@@ -188,7 +188,7 @@ const Submit = () => {
                     type="url"
                     value={formData.task6}
                     onChange={(e) => setFormData({ ...formData, task6: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 bg-white"
                     placeholder="https://github.com/..."
                     required
                   />
