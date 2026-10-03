@@ -16,6 +16,7 @@ export default function AuthPortal() {
   const [domain, setDomain] = useState('Web Development');
   const [branch, setBranch] = useState('Computer Engineering');
   const [academicYear, setAcademicYear] = useState('2nd Year');
+  const [showPassword, setShowPassword] = useState(false);
   
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -215,10 +216,12 @@ export default function AuthPortal() {
             <label className="block text-[11px] font-mono font-semibold text-neutral-400 mb-1 uppercase tracking-wider">Password</label>
             <input
               type="password"
+              name="password"
+              autoComplete="new-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Enter your password"
               className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white font-mono"
             />
           </div>
