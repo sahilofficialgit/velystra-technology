@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,18 +14,19 @@ import Submit from './pages/Submit';
 import OfferLetter from './pages/OfferLetter';
 import Leaderboard from './pages/Learderboard';
 import StudentDashboard from './pages/StudentDashboard';
-import Login from './pages/Login';
-import AdminDashboard from './pages/AdminDashboard';
-import Signup from './components/Signup';
+import CollegeDashboard from './pages/CollegeDashboard';
+import AuthPortal from './pages/AuthPortal'; // Naya Auth Portal (College + Student)
+import SuperAdminDashboard from './pages/SuperAdminDashboard';
+import SuperAdminLogin from './pages/SuperAdminLogin';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-black text-white">
         <Navbar />
         
-        {/* main flex-grow taaki content screen cover kare aur Footer hamesha neeche rahe */}
-        <main className="flex-grow bg-slate-50 font-sans text-slate-800 pt-[72px]">
+        {/* Main content area */}
+        <main className="flex-grow font-sans pt-[72px]">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/internships" element={<Internships />} />
@@ -35,17 +37,26 @@ function App() {
             <Route path="/validate" element={<Validate />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/submit" element={<Submit />} />
-            <Route path="/Login" element={<Login />} />
+            
+            {/* Updated Auth Routes */}
+            <Route path="/login" element={<AuthPortal />} />
+            <Route path="/signup" element={<AuthPortal />} />
+            <Route path="/auth" element={<AuthPortal />} />
+
             <Route path="/offer-letter" element={<OfferLetter />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            
+            {/* Dashboards */}
+            <Route path="/velystra-root-secure-portal" element={<SuperAdminLogin />} />
+            <Route path="/super-admin-dashboard" element={<SuperAdminDashboard />} />
             <Route path="/student-dashboard" element={<StudentDashboard />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/college-dashboard" element={<CollegeDashboard />} />
+            <Route path="/admin-dashboard" element={<CollegeDashboard />} /> {/* Fallback mapping */}
             
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-                <h1 className="text-6xl font-bold text-slate-900 mb-4">404</h1>
-                <p className="text-xl text-slate-600">Page Not Found</p>
+                <h1 className="text-6xl font-bold text-white mb-4">404</h1>
+                <p className="text-xl text-zinc-400">Page Not Found</p>
               </div>
             } />
           </Routes>

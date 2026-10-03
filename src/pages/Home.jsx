@@ -3,7 +3,7 @@ import {
   ArrowRight, Code, Terminal, BookOpen, Users, Trophy, Briefcase, 
   Lightbulb, Monitor, Database, Layers, Clock, CheckCircle2, ShieldCheck, Award, UserPlus
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Data for Section 2: What We Offer
 const offerings = [
@@ -60,6 +60,20 @@ const steps = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("velystra_token");
+  const role = localStorage.getItem("role");
+
+  const handleDashboardRedirect = () => {
+    if (role === 'COLLEGE_ADMIN') {
+      navigate('/college-dashboard');
+    } else if (role === 'STUDENT') {
+      navigate('/student-dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="w-full">
       {/* ==============================================
@@ -83,15 +97,25 @@ const Home = () => {
             Build practical technology skills through campus league challenges, internships, real-world projects, and global developer rankings.
           </p>
           
-          {/* ONLY 2 BUTTONS: Sign Up & View Leaderboard */}
+          {/* Dynamic Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link 
-              to="/signup" 
-              className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2"
-            >
-              <UserPlus size={18} />
-              Sign Up / Register
-            </Link>
+            {token ? (
+              <button 
+                onClick={handleDashboardRedirect}
+                className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2 group"
+              >
+                <span>Go to Dashboard</span>
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <Link 
+                to="/signup" 
+                className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2"
+              >
+                <UserPlus size={18} />
+                Sign Up / Register
+              </Link>
+            )}
             <Link 
               to="/leaderboard" 
               className="px-8 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold transition-all flex items-center gap-2"
@@ -256,8 +280,8 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">Campus Leagues & Leaderboard</h3>
               <p className="text-slate-600 mb-8 flex-grow">Compete in global and college-specific challenges, track your campus score, and earn recognition on the leaderboard.</p>
-              <Link to="/leaderboard" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2">
-                View Public Leaderboard <ArrowRight size={18} />
+              <Link to="/leaderboard" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2 group">
+                View Public Leaderboard <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
 
@@ -267,8 +291,8 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">Certificate Verification</h3>
               <p className="text-slate-600 mb-8 flex-grow">Recruiters and institutions can easily verify the authenticity of any Velystra internship certificate using its unique ID.</p>
-              <Link to="/verify" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2">
-                Verify Certificate <ArrowRight size={18} />
+              <Link to="/verify" className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2 group">
+                Verify Certificate <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
@@ -285,13 +309,23 @@ const Home = () => {
           <p className="text-blue-100 text-lg mb-10">Register today with your college code or explore the public leaderboard.</p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <Link 
-              to="/signup" 
-              className="px-8 py-3.5 rounded-xl bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-all shadow-md flex items-center gap-2"
-            >
-              <UserPlus size={18} />
-              Create Account
-            </Link>
+            {token ? (
+              <button 
+                onClick={handleDashboardRedirect}
+                className="px-8 py-3.5 rounded-xl bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-all shadow-md flex items-center gap-2 group"
+              >
+                <span>Go to Dashboard</span>
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <Link 
+                to="/signup" 
+                className="px-8 py-3.5 rounded-xl bg-white text-blue-700 hover:bg-slate-50 font-semibold transition-all shadow-md flex items-center gap-2"
+              >
+                <UserPlus size={18} />
+                Create Account
+              </Link>
+            )}
             <Link 
               to="/leaderboard" 
               className="px-8 py-3.5 rounded-xl bg-blue-700 hover:bg-blue-800 border border-blue-500 text-white font-semibold transition-all flex items-center gap-2"

@@ -205,6 +205,19 @@ const Verify = () => {
                   required
                 />
               </div>
+            </div><div>
+              <label htmlFor="certId" className="block text-sm font-medium text-slate-700 mb-2">Registration ID</label>
+              <div className="relative">
+                <Search size={18} className="absolute inset-y-0 left-3 top-3.5 text-slate-400" />
+                <input
+                  type="text"
+                  value={certId}
+                  onChange={(e) => setCertId(e.target.value.replace(/-/g, '').toUpperCase())} 
+                  className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 uppercase bg-white"
+                  placeholder="e.g. VTFE26123456"
+                  required
+                />
+              </div>
             </div>
             <button type="submit" disabled={isVerifying || !certId.trim()} className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all">
               {isVerifying ? 'Verifying Data...' : 'Check Status'}

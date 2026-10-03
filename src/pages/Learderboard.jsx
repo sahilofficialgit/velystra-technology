@@ -1,162 +1,195 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Dynamic API Base URL configuration for Local & Production
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import React, { useEffect, useState } from 'react';
+import API from '../services/api';
 
 export default function Leaderboard() {
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [viewType, setViewType] = useState('global'); // 'global' or 'college'
+  const [leaderboards, setLeaderboards] = useState({ globalLeaderboard: [], collegeLeaderboard: [] });
   const [loading, setLoading] = useState(true);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [modalLoading, setModalLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const token = localStorage.getItem('velystra_token');
+  const role = localStorage.getItem('role');
 
   useEffect(() => {
-    fetchLeaderboard();
-  }, [viewType]);
+    const fetchLeaderboards = async () => {
+      try {
+        let url = '/leaderboards';
+        
+        if (token) {
+          try {
+            if (role === 'STUDENT') {
+              const dashRes = await API.get('/student/dashboard');
+              const code = dashRes.data.student.collegeCode;
+              if (code) url = `/leaderboards?collegeCode=${code}`;
+            } else if (role === 'COLLEGE_ADMIN') {
+              const dashRes = await API.get('/college/dashboard');
+              const code = dashRes.data.collegeCode;
+              if (code) url = `/leaderboards?collegeCode=${code}`;
+            }
+          } catch (e) {
+            console.warn('Fallback to global leaderboard.');
+          }
+        }
 
-  const fetchLeaderboard = async () => {
-    try {
-      setLoading(true);
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const response = await axios.get(`${API_BASE_URL}/api/leaderboard?type=${viewType}`, { headers });
-      if (response.data.success) {
-        setLeaderboard(response.data.leaderboard);
+        const res = await API.get(url);
+        setLeaderboards(res.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load rankings.');
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error fetching leaderboard:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  const handleStudentClick = async (studentId) => {
-    try {
-      setModalLoading(true);
-      const res = await axios.get(`${API_BASE_URL}/api/student/${studentId}/profile`);
-      if (res.data.success) {
-        setSelectedStudent(res.data.student);
-      }
-    } catch (err) {
-      alert('Failed to load student profile.');
-    } finally {
-      setModalLoading(false);
-    }
-  };
+    fetchLeaderboards();
+  }, [token, role]);
+
+  if (loading) return <div className="min-h-screen bg-black text-white flex justify-center items-center font-mono text-xs uppercase tracking-widest">Loading Ecosystem Rankings...</div>;
+
+  const hasCollegeAccess = token && leaderboards.collegeLeaderboard.length > 0;
 
   return (
-    <div className="min-h-[85vh] bg-slate-900 py-10 px-4 sm:px-6 lg:px-8 text-slate-100">
-      <div className="max-w-4xl mx-auto">
-        
-        {/* Header & Toggle */}
-        <div className="text-center mb-8">
-          <span className="bg-blue-600/20 text-blue-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-500/30">
-            Campus League & Global Rankings
-          </span>
-          <h1 className="text-3xl font-bold text-white mt-3">Public Leaderboard</h1>
-          <p className="text-slate-400 text-sm mt-1">Compete in college & public events, climb the global rankings, and put your institution on top!</p>
+    <div className="min-h-screen bg-black text-white p-6 md:p-12 font-sans selection:bg-white selection:text-black">
+      
+      {/* Header */}
+      <div className="max-w-7xl mx-auto mb-12 text-center">
+        <span className="text-[10px] bg-white text-black font-bold px-3 py-1 rounded uppercase tracking-widest font-mono">Global Intelligence</span>
+        <h1 className="text-4xl md:text-5xl font-black tracking-tight mt-3">INSTITUTIONAL LEADERBOARD</h1>
+        <p className="text-xs text-neutral-400 mt-2 font-mono max-w-xl mx-auto">
+          Real-time academic performance rankings, event participation metrics, and campus excellence indexing across verified institutions.
+        </p>
+      </div>
 
-          <div className="flex justify-center gap-3 mt-6">
-            <button
-              onClick={() => setViewType('global')}
-              className={`px-5 py-2 rounded-xl text-xs font-semibold transition-all ${viewType === 'global' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-slate-800 text-slate-400 border border-slate-700'}`}
+      {error && <div className="max-w-7xl mx-auto mb-6 p-4 bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs rounded-xl font-mono">{error}</div>}
+
+      <div className="max-w-7xl mx-auto space-y-12">
+        
+        {/* College Leaderboard */}
+        {hasCollegeAccess ? (
+          <div className="bg-black border border-neutral-800 p-8 rounded-2xl shadow-2xl">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-800">
+              <div>
+                <span className="text-[10px] text-neutral-400 uppercase font-mono tracking-wider">Campus Exclusive Node</span>
+                <h2 className="text-lg font-bold tracking-wider uppercase mt-1">Institutional Campus Leaderboard</h2>
+              </div>
+              <span className="text-xs font-mono bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-lg text-neutral-300">
+                Verified Peers Only
+              </span>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr className="border-b border-neutral-800 text-neutral-400 uppercase tracking-wider">
+                    <th className="pb-3 w-16">Rank</th>
+                    <th className="pb-3">Student Name</th>
+                    <th className="pb-3">PRN</th>
+                    <th className="pb-3">Branch & Year</th>
+                    <th className="pb-3 text-right">Campus Score</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-900">
+                  {leaderboards.collegeLeaderboard.map((s, idx) => {
+                    const rank = idx + 1;
+                    let rankBadge = <span className="font-bold text-white text-base font-mono">#{rank}</span>;
+                    if (rank === 1) rankBadge = <span className="text-2xl" title="Rank 1: Gold Medal">🥇</span>;
+                    else if (rank === 2) rankBadge = <span className="text-2xl" title="Rank 2: Silver Medal">🥈</span>;
+                    else if (rank === 3) rankBadge = <span className="text-2xl" title="Rank 3: Bronze Medal">🥉</span>;
+
+                    return (
+                      <tr key={s.id} className="hover:bg-neutral-950 transition">
+                        <td className="py-4">{rankBadge}</td>
+                        <td className="py-4 flex items-center gap-4">
+                          <img 
+                            src={s.avatarUrl || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(s.name)} 
+                            alt={s.name} 
+                            className="w-11 h-11 rounded-full border border-neutral-700 object-cover bg-neutral-900 shadow-md" 
+                          />
+                          <div>
+                            <p className="font-bold text-white text-sm">{s.name}</p>
+                            <p className="text-[11px] text-neutral-400 font-mono">{s.prnNumber}</p>
+                          </div>
+                        </td>
+                        <td className="py-4 text-neutral-400">{s.prnNumber}</td>
+                        <td className="py-4 text-neutral-300">{s.branch} ({s.academicYear})</td>
+                        <td className="py-4 text-right font-black text-white text-sm">{s.campusScore} PTS</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-neutral-950 border border-neutral-800 p-8 rounded-2xl text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-neutral-700"></div>
+            <h3 className="text-sm font-bold uppercase tracking-wider font-mono text-white mb-2">Institutional Campus Rankings Locked</h3>
+            <p className="text-xs text-neutral-400 font-mono max-w-md mx-auto mb-6">
+              Sign in with your student PRN or college admin account and complete verification to unlock your institution's exclusive leaderboard.
+            </p>
+            <a
+              href="/signup"
+              className="inline-block bg-white hover:bg-neutral-200 text-black px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition"
             >
-              🌍 Global Rankings
-            </button>
-            <button
-              onClick={() => setViewType('college')}
-              className={`px-5 py-2 rounded-xl text-xs font-semibold transition-all ${viewType === 'college' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-slate-800 text-slate-400 border border-slate-700'}`}
-            >
-              🏛️ My College Top 10
-            </button>
+              Join Your Campus Node ↗
+            </a>
+          </div>
+        )}
+
+        {/* Global Leaderboard */}
+        <div className="bg-black border border-neutral-800 p-8 rounded-2xl shadow-2xl">
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-800">
+            <div>
+              <span className="text-[10px] text-neutral-400 uppercase font-mono tracking-wider">Ecosystem-Wide Index</span>
+              <h2 className="text-lg font-bold tracking-wider uppercase mt-1">Global Institutional Leaderboard</h2>
+            </div>
+            <span className="text-xs font-mono bg-white text-black font-bold px-3 py-1 rounded-lg">
+              All Verified Campuses
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-mono">
+              <thead>
+                <tr className="border-b border-neutral-800 text-neutral-400 uppercase tracking-wider">
+                  <th className="pb-3 w-16">Rank</th>
+                  <th className="pb-3">Student Name & Institution</th>
+                  <th className="pb-3">Branch & Stream</th>
+                  <th className="pb-3 text-right">Global Score</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-900">
+                {leaderboards.globalLeaderboard.map((s, idx) => {
+                  const rank = idx + 1;
+                  let rankBadge = <span className="font-bold text-white text-base font-mono">#{rank}</span>;
+                  if (rank === 1) rankBadge = <span className="text-2xl" title="Rank 1: Gold Medal">🥇</span>;
+                  else if (rank === 2) rankBadge = <span className="text-2xl" title="Rank 2: Silver Medal">🥈</span>;
+                  else if (rank === 3) rankBadge = <span className="text-2xl" title="Rank 3: Bronze Medal">🥉</span>;
+
+                  return (
+                    <tr key={s.id} className="hover:bg-neutral-950 transition">
+                      <td className="py-4">{rankBadge}</td>
+                      <td className="py-4 flex items-center gap-4">
+                        <img 
+                          src={s.avatarUrl || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(s.name)} 
+                          alt={s.name} 
+                          className="w-11 h-11 rounded-full border border-neutral-700 object-cover bg-neutral-900 shadow-md" 
+                        />
+                        <div>
+                          <p className="font-bold text-white text-sm">{s.name}</p>
+                          <p className="text-[11px] text-neutral-400">{s.collegeName}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 text-neutral-300">{s.branch} ({s.academicYear})</td>
+                      <td className="py-4 text-right font-black text-white text-sm">{s.campusScore} PTS</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-center py-20 text-slate-400">Loading rankings...</div>
-        ) : leaderboard.length === 0 ? (
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl p-10 text-center text-slate-400">
-            No rankings available for this category yet.
-          </div>
-        ) : (
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
-            <div className="divide-y divide-slate-700">
-              {leaderboard.map((student, index) => (
-                <div 
-                  key={student.id} 
-                  onClick={() => handleStudentClick(student.id)}
-                  className="p-4 sm:p-6 flex items-center justify-between gap-4 hover:bg-slate-750 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${
-                      index === 0 ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30' :
-                      index === 1 ? 'bg-slate-300 text-slate-950' :
-                      index === 2 ? 'bg-amber-700 text-white' : 'bg-slate-900 text-slate-400'
-                    }`}>
-                      #{index + 1}
-                    </div>
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 overflow-hidden flex items-center justify-center font-bold text-blue-400">
-                      {student.avatarUrl ? <img src={student.avatarUrl} alt="Avatar" className="w-full h-full object-cover" /> : student.fullName.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold text-white hover:text-blue-400 transition-colors flex items-center gap-2">
-                        {student.fullName}
-                        <span className="text-xs bg-slate-900 text-blue-400 px-2 py-0.5 rounded-md border border-slate-700 font-normal">{student.domain}</span>
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                        <span className="text-amber-400 font-medium">🏛️ {student.college?.name || 'Independent'}</span>
-                      </p>
-                      {/* Points Split Breakdown Display */}
-                      <div className="flex gap-3 text-[11px] text-slate-400 mt-1">
-                        <span className="text-indigo-300">College Pts: <strong>{student.collegePoints || 0}</strong></span>
-                        <span>•</span>
-                        <span className="text-teal-300">Public Pts: <strong>{student.publicPoints || 0}</strong></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="text-xl font-extrabold text-emerald-400">{student.campusScore}</span>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Pts</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Student Public Profile Modal */}
-        {selectedStudent && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 animate-fadeIn">
-            <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-md w-full space-y-6 relative shadow-2xl">
-              <button 
-                onClick={() => setSelectedStudent(null)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-900 px-3 py-1.5 rounded-xl text-xs font-medium"
-              >
-                ✕ Close
-              </button>
-
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-2xl bg-slate-900 border border-blue-500/40 overflow-hidden flex items-center justify-center text-3xl font-bold text-blue-400 mb-3 shadow-lg">
-                  {selectedStudent.avatarUrl ? <img src={selectedStudent.avatarUrl} alt="Avatar" className="w-full h-full object-cover" /> : selectedStudent.fullName.charAt(0)}
-                </div>
-                <h3 className="text-xl font-bold text-white">{selectedStudent.fullName}</h3>
-                <p className="text-xs text-blue-400 mt-1 bg-blue-950/50 px-3 py-1 rounded-full border border-blue-800/40">{selectedStudent.domain}</p>
-                <p className="text-xs text-slate-400 mt-2 italic">"{selectedStudent.bio || 'No bio provided'}"</p>
-              </div>
-
-              <div className="bg-slate-900 border border-slate-700 p-4 rounded-xl space-y-2 text-sm">
-                <p className="flex justify-between"><strong className="text-slate-400">College:</strong> <span className="text-white font-medium">{selectedStudent.college?.name}</span></p>
-                <p className="flex justify-between"><strong className="text-slate-400">Approved Submissions:</strong> <span className="text-emerald-400 font-bold">{selectedStudent.submissions?.length || 0}</span></p>
-                <p className="flex justify-between"><strong className="text-slate-400">Total Campus Score:</strong> <span className="text-blue-400 font-extrabold">{selectedStudent.campusScore} pts</span></p>
-              </div>
-            </div>
-          </div>
-        )}
-
       </div>
+
     </div>
   );
 }
