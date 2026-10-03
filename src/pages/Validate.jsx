@@ -53,7 +53,7 @@ const Validate = () => {
                   type="text"
                   value={certId}
                   onChange={(e) => setCertId(e.target.value.toUpperCase())}
-                  className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono uppercase"
+                  className="block w-full pl-10 pr-3 py-3.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm text-slate-900 uppercase bg-white"
                   placeholder="e.g. VTCC26123456"
                   required
                 />
