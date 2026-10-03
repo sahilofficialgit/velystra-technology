@@ -71,7 +71,7 @@ const Navbar = () => {
               className="h-8 w-auto object-contain filter invert"
             />
             <span className="text-xl font-extrabold tracking-tight hidden sm:block font-mono">
-              VELYSTRA <span className="text-neutral-400 font-light">SYSTEMS</span>
+              VELYSTRA <span className="text-neutral-400 font-light">TECHNOLOGY</span>
             </span>
           </div>
 
