@@ -15,8 +15,7 @@ export default function AuthPortal() {
   const [prnNumber, setPrnNumber] = useState('');
   const [domain, setDomain] = useState('Web Development');
   const [branch, setBranch] = useState('Computer Engineering');
-  const [academicYear, setAcademicYear] = useState('2nd Year');
-  const [showPassword, setShowPassword] = useState(false);
+  const [academicYear, setAcademicYear] = useState('1st Year');
   
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
