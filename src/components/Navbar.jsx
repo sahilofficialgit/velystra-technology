@@ -105,12 +105,6 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 <NavLink
                   to="/signup"
-                  className="hidden md:inline-block text-neutral-400 hover:text-white text-xs font-mono uppercase tracking-wider px-4 py-2"
-                >
-                  Sign In
-                </NavLink>
-                <NavLink
-                  to="/signup"
                   className="hidden md:inline-block bg-white hover:bg-neutral-200 text-black text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition shadow-lg font-mono"
                 >
                   Get Started
